@@ -6,4 +6,7 @@ temp/*
 tmp/*
 !tmp/.gitkeep
 
+postgres/backups/*
+!postgres/backups/.gitkeep
+
 coverage
