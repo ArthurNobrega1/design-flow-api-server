@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { celebrate, Segments, Joi } from 'celebrate';
+import AuthMiddleware from '@shared/infra/http/middlewares/AuthMiddleware';
 import UsersController from '../controllers/UsersController';
 
 const usersRouter = Router();
@@ -90,6 +91,7 @@ usersRouter.post(
 
 usersRouter.put(
   '/',
+  AuthMiddleware,
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().uuid().required(),
@@ -151,6 +153,7 @@ usersRouter.put(
 
 usersRouter.get(
   '/',
+  AuthMiddleware,
   celebrate({
     [Segments.QUERY]: {
       id: Joi.string().uuid(),
@@ -187,6 +190,7 @@ usersRouter.get(
 
 usersRouter.delete(
   '/',
+  AuthMiddleware,
   celebrate({
     [Segments.QUERY]: {
       id: Joi.string().uuid().required(),
