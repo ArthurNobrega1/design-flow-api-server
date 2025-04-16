@@ -28,7 +28,7 @@ class CreateUserService {
       username: data.username,
     });
     if (usersSameUsername && usersSameUsername.length) {
-      throw new AppError('Nomde de usuário já registrado', 400);
+      throw new AppError('Nome de usuário já registrado', 400);
     }
 
     const hashedPassword = await this.hashProvider.generateHash(

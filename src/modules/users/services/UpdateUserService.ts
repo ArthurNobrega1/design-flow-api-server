@@ -31,7 +31,7 @@ class UpdateUserService {
         username: data.username,
       });
       if (username && username.length) {
-        throw new AppError('Nomde de usuário já registrado', 400);
+        throw new AppError('Nome de usuário já registrado', 400);
       }
     }
 
