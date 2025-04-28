@@ -26,7 +26,7 @@ class Users {
   @Column({ type: 'varchar' })
   fullname: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', select: false })
   password: string;
 
   @Column({ type: 'varchar', default: 'default' })
