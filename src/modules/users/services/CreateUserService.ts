@@ -17,6 +17,15 @@ class CreateUserService {
   ) {}
 
   public async execute(data: ICreateUserDTO): Promise<Users> {
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(data.email)) {
+      throw new AppError('Email inválido', 400);
+    }
+
+    if (data.password.toString().length < 3) {
+      throw new AppError('A senha deve ter no mínimo 3 caracteres', 400);
+    }
+
     const usersSameEmail = await this.usersRepository.find({
       email: data.email,
     });
