@@ -5,4 +5,5 @@ export default interface ISearchUsersDTO {
   username?: string;
   fullname?: string;
   permission?: string;
+  active?: boolean;
 }

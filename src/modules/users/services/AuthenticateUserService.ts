@@ -8,7 +8,6 @@ import {
   ICreateSessionRequestDTO,
   ICreateSessionResponseDTO,
 } from '../dtos/ISessionsDTO';
-import Users from '../infra/typeorm/entities/users';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
@@ -26,19 +25,10 @@ class AuthenticateUserService {
     username,
     password,
   }: ICreateSessionRequestDTO): Promise<ICreateSessionResponseDTO> {
-    let users: Users[] | undefined;
-
-    if (email) {
-      users = await this.usersRepository.find({ email });
-    } else if (username) {
-      users = await this.usersRepository.find({ username });
-    }
-
-    if (!users || !users.length) {
-      throw new AppError('Verifique o email e a senha', 401);
-    }
-
-    const user = users[0];
+    const user = await this.usersRepository.findWithPassword({
+      email,
+      username,
+    });
 
     if (!user) {
       throw new AppError('Verifique o email e a senha', 401);
@@ -103,7 +93,10 @@ class AuthenticateUserService {
       expiresIn: expiresIn as StringValue,
     });
 
-    return { user, token };
+    const userWithoutPassword = { ...user };
+    delete (userWithoutPassword as { password?: string }).password;
+
+    return { user: userWithoutPassword, token };
   }
 }
 

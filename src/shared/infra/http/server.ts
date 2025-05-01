@@ -56,5 +56,5 @@ app.use(
 );
 
 app.listen(port, () => {
-  logger.info(`Acesse em http://localhost:${port}`);
+  logger.info(`Acesse em http://localhost:3337`);
 });

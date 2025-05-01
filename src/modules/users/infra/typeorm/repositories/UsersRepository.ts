@@ -34,6 +34,28 @@ class UsersRepository implements IUsersRepository {
     });
   }
 
+  public async findWithPassword({
+    email,
+    username,
+  }: {
+    email?: string;
+    username?: string;
+  }): Promise<Users | null> {
+    const query = this.ormRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password');
+
+    if (email) {
+      query.where('user.email = :email', { email });
+    } else if (username) {
+      query.where('user.username = :username', { username });
+    } else {
+      return null;
+    }
+
+    return query.getOne();
+  }
+
   public async find(search: ISearchUsersDTO): Promise<Users[] | undefined> {
     const query =
       AppDataSource.getRepository(Users).createQueryBuilder('users');
@@ -60,6 +82,10 @@ class UsersRepository implements IUsersRepository {
 
     if (search.permission) {
       query.andWhere(`users.permission = '${search.permission}'`);
+    }
+
+    if (search.active !== null && search.active !== undefined) {
+      query.andWhere(`users.active = '${search.active}'`);
     }
 
     query.orderBy('users.created_at', 'DESC');
