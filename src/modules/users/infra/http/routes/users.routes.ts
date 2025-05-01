@@ -33,6 +33,8 @@ const usersRouter = Router();
  *                 type: string
  *               permission:
  *                 type: string
+ *               active:
+ *                 type: boolean
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -49,6 +51,7 @@ usersRouter.post(
       fullname: Joi.string().required(),
       password: Joi.string().required(),
       permission: Joi.string().allow(null),
+      active: Joi.boolean(),
     },
   }),
   UsersController.create,
@@ -84,6 +87,8 @@ usersRouter.post(
  *                 type: string
  *               permission:
  *                 type: string
+ *               active:
+ *                 type: boolean
  *     responses:
  *       200:
  *         description: Informações do usuário atualizadas com sucesso
@@ -101,6 +106,7 @@ usersRouter.put(
       username: Joi.string(),
       fullname: Joi.string(),
       permission: Joi.string(),
+      active: Joi.boolean(),
     },
   }),
   UsersController.update,
@@ -130,22 +136,29 @@ usersRouter.put(
  *         name: birthday
  *         schema:
  *           type: string
- *         description: Aniversário de usuário
+ *           format: date
+ *         description: Data de nascimento do usuário
  *       - in: query
  *         name: email
  *         schema:
  *           type: string
- *         description: E-mail de usuário
+ *           format: email
+ *         description: E-mail do usuário
  *       - in: query
  *         name: fullname
  *         schema:
  *           type: string
- *         description: Nome completo de usuário
+ *         description: Nome completo do usuário
  *       - in: query
- *         name: birthday
+ *         name: permission
  *         schema:
- *           type: permission
- *         description: Permissão de usuário
+ *           type: string
+ *         description: Permissão do usuário
+ *       - in: query
+ *         name: active
+ *         schema:
+ *           type: boolean
+ *         description: Status ativo do usuário
  *     responses:
  *       200:
  *         description: Informações do usuário
@@ -162,6 +175,7 @@ usersRouter.get(
       username: Joi.string(),
       fullname: Joi.string(),
       permission: Joi.string(),
+      active: Joi.boolean(),
     },
   }),
   UsersController.show,

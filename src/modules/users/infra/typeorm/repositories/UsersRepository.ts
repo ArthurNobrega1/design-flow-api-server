@@ -84,6 +84,10 @@ class UsersRepository implements IUsersRepository {
       query.andWhere(`users.permission = '${search.permission}'`);
     }
 
+    if (search.active !== null && search.active !== undefined) {
+      query.andWhere(`users.active = '${search.active}'`);
+    }
+
     query.orderBy('users.created_at', 'DESC');
 
     const data = await query.getMany();

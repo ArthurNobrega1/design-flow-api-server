@@ -32,6 +32,9 @@ class Users {
   @Column({ type: 'varchar', default: 'default' })
   permission: string;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 

@@ -93,7 +93,10 @@ class AuthenticateUserService {
       expiresIn: expiresIn as StringValue,
     });
 
-    return { user, token };
+    const userWithoutPassword = { ...user };
+    delete (userWithoutPassword as { password?: string }).password;
+
+    return { user: userWithoutPassword, token };
   }
 }
 
