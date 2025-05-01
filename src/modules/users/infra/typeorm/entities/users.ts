@@ -4,7 +4,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
+  OneToMany,
 } from 'typeorm';
+import UserTokens from './userTokens';
 
 @Entity('users')
 class Users {
@@ -26,17 +28,27 @@ class Users {
   @Column({ type: 'varchar' })
   fullname: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', select: false })
   password: string;
 
   @Column({ type: 'varchar', default: 'default' })
   permission: string;
+
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  //* ***************** *//
+  // Relationship
+  //* ***************** *//
+
+  @OneToMany(() => UserTokens, userTokens => userTokens.user)
+  user_tokens: UserTokens[];
 }
 
 export default Users;
