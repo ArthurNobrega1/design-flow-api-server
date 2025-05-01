@@ -4,7 +4,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
+  OneToMany,
 } from 'typeorm';
+import UserTokens from './userTokens';
 
 @Entity('users')
 class Users {
@@ -40,6 +42,13 @@ class Users {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  //* ***************** *//
+  // Relationship
+  //* ***************** *//
+
+  @OneToMany(() => UserTokens, userTokens => userTokens.user)
+  user_tokens: UserTokens[];
 }
 
 export default Users;
