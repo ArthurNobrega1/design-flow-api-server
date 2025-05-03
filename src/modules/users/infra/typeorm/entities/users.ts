@@ -5,7 +5,9 @@ import {
   UpdateDateColumn,
   Column,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
+import Files from '@modules/files/infra/typeorm/entities/files';
 import UserTokens from './userTokens';
 
 @Entity('users')
@@ -46,6 +48,9 @@ class Users {
   //* ***************** *//
   // Relationship
   //* ***************** *//
+
+  @OneToOne(() => Files, file => file.user)
+  avatar: Files;
 
   @OneToMany(() => UserTokens, userTokens => userTokens.user)
   user_tokens: UserTokens[];
