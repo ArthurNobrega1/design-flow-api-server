@@ -10,50 +10,54 @@ class FakeUsersRepository implements IUsersRepository {
   private users: Users[] = [];
 
   public async create(data: ICreateUserDTO): Promise<Users> {
-    const newUser = { ...new Users(), ...data, id: uuid() };
-    newUser.created_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
-    newUser.updated_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
-    this.users.push(newUser);
-    return this.omitPassword(newUser);
+    const user = { ...new Users(), ...data, id: uuid() };
+    user.created_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
+    user.updated_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
+    this.users.push(user);
+    return this.omitPassword(user);
   }
 
   public async delete(id: string): Promise<void> {
-    this.users = this.users.filter(existingUser => existingUser.id !== id);
+    this.users = this.users.filter(user => user.id !== id);
   }
 
   public async findById(id: string): Promise<Users | null> {
-    const foundUser = this.users.find(existingUser => existingUser.id === id);
-    return foundUser ? this.omitPassword(foundUser) : null;
+    const userFiltered = this.users.find(user => user.id === id);
+    if (!userFiltered) {
+      return null;
+    }
+
+    return this.omitPassword(userFiltered);
   }
 
   public async find(search: ISearchUsersDTO): Promise<Users[] | undefined> {
-    const filtered = this.users.filter(existingUser =>
+    const userFiltered = this.users.filter(user =>
       Object.entries(search).every(
-        ([key, value]) => existingUser[key as keyof Users] === value,
+        ([key, value]) => user[key as keyof Users] === value,
       ),
     );
 
-    if (!filtered.length) return undefined;
-
-    return filtered.map(existingUser => this.omitPassword(existingUser));
+    return userFiltered.length
+      ? userFiltered.map(existingUser => this.omitPassword(existingUser))
+      : undefined;
   }
 
   public async save(data: Users): Promise<Users> {
+    const index = this.users.findIndex(user => user.id === data.id);
+
     const updatedUser = {
+      ...(index >= 0 ? this.users[index] : {}),
       ...data,
       updated_at: parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date()),
     };
 
-    const index = this.users.findIndex(
-      existingUser => existingUser.id === data.id,
-    );
     if (index >= 0) {
-      this.users[index] = { ...this.users[index], ...updatedUser };
-      return this.omitPassword(this.users[index]);
+      this.users[index] = updatedUser;
+    } else {
+      this.users.push(updatedUser);
     }
 
-    this.users.push(updatedUser);
-    return this.omitPassword(updatedUser);
+    return updatedUser;
   }
 
   public async findWithPassword({
