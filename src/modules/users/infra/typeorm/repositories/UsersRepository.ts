@@ -57,8 +57,9 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async find(search: ISearchUsersDTO): Promise<Users[] | undefined> {
-    const query =
-      AppDataSource.getRepository(Users).createQueryBuilder('users');
+    const query = AppDataSource.getRepository(Users)
+      .createQueryBuilder('users')
+      .leftJoinAndSelect('users.user_tokens', 'user_tokens');
 
     if (search.id) {
       query.andWhere(`users.id = '${search.id}'`);
