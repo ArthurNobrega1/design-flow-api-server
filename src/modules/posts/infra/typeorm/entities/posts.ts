@@ -4,27 +4,24 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  JoinColumn,
-  OneToOne,
   ManyToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 import Users from '@modules/users/infra/typeorm/entities/users';
-import Posts from '@modules/posts/infra/typeorm/entities/posts';
+import Files from '@modules/files/infra/typeorm/entities/files';
 
-@Entity('files')
-class Files {
+@Entity('posts')
+class Posts {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar' })
-  path: string;
+  title: string;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'uuid' })
   user_id: string;
-
-  @Column({ type: 'uuid', nullable: true })
-  post_id: string;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
@@ -39,19 +36,15 @@ class Files {
   // Relationship
   //* ***************** *//
 
-  @OneToOne(() => Users, users => users.avatar, {
+  @ManyToOne(() => Users, users => users.posts, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @ManyToOne(() => Posts, posts => posts.files, {
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'post_id' })
-  post: Posts;
+  @OneToMany(() => Files, files => files.post)
+  files: Files[];
 }
 
-export default Files;
+export default Posts;

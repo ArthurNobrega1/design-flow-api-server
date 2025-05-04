@@ -13,6 +13,7 @@ class FakeUserTokensRepository implements IUserTokensRepository {
       id: uuid(),
       token: uuid(),
       user_id: userId,
+      active: true,
     };
     userToken.created_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     userToken.updated_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
