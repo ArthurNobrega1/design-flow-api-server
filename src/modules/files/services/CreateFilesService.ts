@@ -29,8 +29,11 @@ class CreateFilesService {
       throw new AppError('Arquivos não enviados', 400);
     }
 
-    if (!data.user_id) {
-      throw new AppError('O arquivo deve estar associado a um usuário', 400);
+    if (!data.user_id && !data.post_id) {
+      throw new AppError(
+        'O arquivo deve estar associado a um usuário ou a uma postagem',
+        400,
+      );
     }
 
     if (data.user_id) {
