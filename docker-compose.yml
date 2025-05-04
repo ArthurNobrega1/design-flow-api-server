@@ -34,6 +34,8 @@ services:
     working_dir: /api
     volumes:
       - .:/api
+      - /api/node_modules
+
     ports:
       - '3337:3333'
     depends_on:

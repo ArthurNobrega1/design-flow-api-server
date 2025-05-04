@@ -28,7 +28,7 @@ class ResetPasswordService {
       throw new AppError('A senha deve ter no mínimo 3 caracteres', 400);
     }
 
-    if (!userToken) {
+    if (!userToken || !userToken.active) {
       throw new AppError('Token do usuário não encontrado', 404);
     }
 
@@ -42,12 +42,21 @@ class ResetPasswordService {
     const compareDate = addHours(tokenCreatedAt, 2);
 
     if (isAfter(timezone(), compareDate)) {
+      await this.userTokensRepository.save({
+        ...userToken,
+        active: false,
+      });
       throw new AppError('Token expirado', 401);
     }
 
     user.password = await this.hashProvider.generateHash(data.password);
 
-    this.usersRepository.save(user);
+    await this.usersRepository.save(user);
+
+    await this.userTokensRepository.save({
+      ...userToken,
+      active: false,
+    });
   }
 }
 

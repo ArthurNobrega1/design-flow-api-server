@@ -34,6 +34,26 @@ class FakeUserTokensRepository implements IUserTokensRepository {
   public async delete(id: string): Promise<void> {
     this.userTokens = this.userTokens.filter(userToken => userToken.id !== id);
   }
+
+  public async save(data: UserTokens): Promise<UserTokens> {
+    const index = this.userTokens.findIndex(
+      userToken => userToken.id === data.id,
+    );
+
+    const updatedUserToken = {
+      ...(index >= 0 ? this.userTokens[index] : {}),
+      ...data,
+      updated_at: parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date()),
+    };
+
+    if (index >= 0) {
+      this.userTokens[index] = updatedUserToken;
+    } else {
+      this.userTokens.push(updatedUserToken);
+    }
+
+    return updatedUserToken;
+  }
 }
 
 export default FakeUserTokensRepository;
