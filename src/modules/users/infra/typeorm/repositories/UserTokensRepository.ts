@@ -31,6 +31,13 @@ class UserTokensRepository implements IUserTokensRepository {
   public async delete(id: string): Promise<void> {
     await this.ormRepository.delete(id);
   }
+
+  public async save(data: UserTokens): Promise<UserTokens> {
+    return this.ormRepository.save({
+      ...data,
+      updated_at: timezone(),
+    });
+  }
 }
 
 export default UserTokensRepository;
