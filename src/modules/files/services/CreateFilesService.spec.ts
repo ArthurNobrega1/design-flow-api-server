@@ -101,7 +101,7 @@ describe('CreateFilesService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to create a file without user_id', async () => {
+  it('should not be able to create a file without user_id and post_id', async () => {
     await expect(
       createFileService.execute({ path: 'images/no-owner' }, [
         {

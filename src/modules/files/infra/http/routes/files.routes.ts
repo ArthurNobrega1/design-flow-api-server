@@ -27,6 +27,9 @@ filesRouter.use(AuthMiddleware);
  *           schema:
  *             type: object
  *             properties:
+ *               post_id:
+ *                 type: string
+ *                 format: uuid
  *               user_id:
  *                 type: string
  *                 format: uuid
@@ -42,6 +45,7 @@ filesRouter.post(
   celebrate({
     [Segments.BODY]: {
       user_id: Joi.string().uuid(),
+      post_id: Joi.string().uuid(),
       active: Joi.boolean(),
     },
   }),
@@ -69,6 +73,9 @@ filesRouter.post(
  *               user_id:
  *                 type: string
  *                 format: uuid
+ *               post_id:
+ *                 type: string
+ *                 format: uuid
  *               active:
  *                 type: boolean
  *     responses:
@@ -83,6 +90,7 @@ filesRouter.put(
     [Segments.BODY]: {
       id: Joi.string().uuid().required(),
       user_id: Joi.string().uuid().allow(null),
+      post_id: Joi.string().uuid().allow(null),
       active: Joi.boolean(),
     },
   }),
@@ -116,6 +124,12 @@ filesRouter.put(
  *           format: uuid
  *         description: ID do dono do avatar
  *       - in: query
+ *         name: post_id
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID da postagem
+ *       - in: query
  *         name: active
  *         schema:
  *           type: boolean
@@ -131,6 +145,7 @@ filesRouter.get(
       id: Joi.string().uuid(),
       path: Joi.string(),
       user_id: Joi.string().uuid(),
+      post_id: Joi.string().uuid(),
       active: Joi.boolean(),
     },
   }),

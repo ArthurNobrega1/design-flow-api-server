@@ -8,6 +8,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import Files from '@modules/files/infra/typeorm/entities/files';
+import Posts from '@modules/posts/infra/typeorm/entities/posts';
 import UserTokens from './userTokens';
 
 @Entity('users')
@@ -54,6 +55,9 @@ class Users {
 
   @OneToMany(() => UserTokens, userTokens => userTokens.user)
   user_tokens: UserTokens[];
+
+  @OneToMany(() => Posts, posts => posts.user)
+  posts: Posts[];
 }
 
 export default Users;
