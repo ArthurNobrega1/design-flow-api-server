@@ -43,7 +43,8 @@ class UsersRepository implements IUsersRepository {
   }): Promise<Users | null> {
     const query = this.ormRepository
       .createQueryBuilder('user')
-      .addSelect('user.password');
+      .addSelect('user.password')
+      .where('user.active = true');
 
     if (email) {
       query.where('user.email = :email', { email });
