@@ -16,7 +16,7 @@ describe('CreateUser', () => {
       fakeHashProvider,
     );
   });
-  it('should be able to create a new user', async () => {
+  it('should be able to create a user', async () => {
     const user = await createUserService.execute({
       email: 'jhonDoe@gmail.com',
       fullname: 'Jhon Doe',
