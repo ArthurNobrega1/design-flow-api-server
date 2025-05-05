@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/providers/StorageProvider/models/IStorageProvider';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import Files from '../infra/typeorm/entities/files';
 import ICreateFilesDTO from '../dtos/ICreateFilesDTO';
 import IFilesRepository from '../repositories/IFilesRepository';
@@ -19,6 +20,9 @@ class CreateFilesService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('PostsRepository')
+    private postsRepository: IPostsRepository,
   ) {}
 
   public async execute(
@@ -38,8 +42,15 @@ class CreateFilesService {
 
     if (data.user_id) {
       const user = await this.usersRepository.findById(data.user_id);
-      if (!user) {
+      if (!user || !user.active) {
         throw new AppError('Usuário inválido', 400);
+      }
+    }
+
+    if (data.post_id) {
+      const post = await this.postsRepository.findById(data.post_id);
+      if (!post || !post.active) {
+        throw new AppError('Postagem inválida', 400);
       }
     }
 
