@@ -27,6 +27,7 @@ class CreateFilesService {
 
   public async execute(
     data: ICreateFilesDTO,
+    userId: string,
     files?: IFileDTO[] | { [fieldname: string]: IFileDTO[] },
   ): Promise<Files[]> {
     if (!files || !files.length) {
@@ -41,6 +42,13 @@ class CreateFilesService {
     }
 
     if (data.user_id) {
+      if (data.user_id !== userId) {
+        throw new AppError(
+          'Você não tem permissão para enviar arquivos para outro usuário',
+          400,
+        );
+      }
+
       const user = await this.usersRepository.findById(data.user_id);
       if (!user || !user.active) {
         throw new AppError('Usuário inválido', 400);
@@ -51,6 +59,12 @@ class CreateFilesService {
       const post = await this.postsRepository.findById(data.post_id);
       if (!post || !post.active) {
         throw new AppError('Postagem inválida', 400);
+      }
+      if (post.user_id !== userId) {
+        throw new AppError(
+          'Você não tem permissão para enviar arquivos para um post de outro usuário',
+          400,
+        );
       }
     }
 

@@ -25,9 +25,6 @@ postsRouter.use(AuthMiddleware);
  *             properties:
  *               title:
  *                 type: string
- *               user_id:
- *                 type: string
- *                 format: uuid
  *               active:
  *                 type: boolean
  *     responses:
@@ -40,7 +37,6 @@ postsRouter.post(
   celebrate({
     [Segments.BODY]: {
       title: Joi.string().required(),
-      user_id: Joi.string().uuid().required(),
       active: Joi.boolean(),
     },
   }),
@@ -67,9 +63,6 @@ postsRouter.post(
  *                 format: uuid
  *               content:
  *                 type: string
- *               user_id:
- *                 type: string
- *                 format: uuid
  *               active:
  *                 type: boolean
  *     responses:
@@ -83,7 +76,6 @@ postsRouter.put(
     [Segments.BODY]: {
       id: Joi.string().uuid().required(),
       title: Joi.string(),
-      user_id: Joi.string().uuid(),
       active: Joi.boolean(),
     },
   }),

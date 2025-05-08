@@ -6,23 +6,24 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  OneToMany,
 } from 'typeorm';
 
 import Users from '@modules/users/infra/typeorm/entities/users';
-import Files from '@modules/files/infra/typeorm/entities/files';
-import Comments from '@modules/comments/infra/typeorm/entities/comments';
+import Posts from '@modules/posts/infra/typeorm/entities/posts';
 
-@Entity('posts')
-class Posts {
+@Entity('comments')
+class Comments {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar' })
-  title: string;
+  content: string;
 
   @Column({ type: 'uuid' })
   user_id: string;
+
+  @Column({ type: 'uuid' })
+  post_id: string;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
@@ -37,18 +38,19 @@ class Posts {
   // Relationship
   //* ***************** *//
 
-  @ManyToOne(() => Users, users => users.posts, {
+  @ManyToOne(() => Users, users => users.comments, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @OneToMany(() => Files, files => files.post)
-  files: Files[];
-
-  @OneToMany(() => Comments, comments => comments.post)
-  comments: Comments[];
+  @ManyToOne(() => Posts, posts => posts.comments, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'post_id' })
+  post: Posts;
 }
 
-export default Posts;
+export default Comments;

@@ -10,7 +10,13 @@ class FilesController {
   public async create(request: Request, response: Response): Promise<void> {
     const createFilesService = container.resolve(CreateFilesService);
 
-    const files = await createFilesService.execute(request.body, request.files);
+    const userId = request.user.id;
+
+    const files = await createFilesService.execute(
+      request.body,
+      userId,
+      request.files,
+    );
 
     response.status(201).json(files);
   }
@@ -18,9 +24,14 @@ class FilesController {
   public async update(request: Request, response: Response): Promise<void> {
     const updateFileService = container.resolve(UpdateFileService);
 
-    const newFile = await updateFileService.execute({
-      ...request.body,
-    });
+    const userId = request.user.id;
+
+    const newFile = await updateFileService.execute(
+      {
+        ...request.body,
+      },
+      userId,
+    );
 
     response.status(200).json(newFile);
   }
@@ -38,7 +49,9 @@ class FilesController {
 
     const id: string = request.query.id as string;
 
-    const deleted = await deleteFileService.execute(id);
+    const userId = request.user.id;
+
+    const deleted = await deleteFileService.execute(id, userId);
 
     response.status(204).json(deleted);
   }

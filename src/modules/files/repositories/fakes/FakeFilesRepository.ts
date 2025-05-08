@@ -10,7 +10,7 @@ class FakeFilesRepository implements IFilesRepository {
   private files: Files[] = [];
 
   public async create(data: ICreateFilesDTO): Promise<Files> {
-    const file = { ...new Files(), ...data, id: uuid(), active: true };
+    const file = { ...new Files(), active: true, ...data, id: uuid() };
     file.created_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     file.updated_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     this.files.push(file);

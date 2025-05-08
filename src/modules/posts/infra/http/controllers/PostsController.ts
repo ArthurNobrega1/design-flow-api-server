@@ -10,9 +10,14 @@ class PostsController {
   public async create(request: Request, response: Response): Promise<void> {
     const createPostService = container.resolve(CreatePostService);
 
-    const post = await createPostService.execute({
-      ...request.body,
-    });
+    const userId = request.user.id;
+
+    const post = await createPostService.execute(
+      {
+        ...request.body,
+      },
+      userId,
+    );
 
     response.status(201).json(post);
   }
@@ -20,9 +25,14 @@ class PostsController {
   public async update(request: Request, response: Response): Promise<void> {
     const updatePostService = container.resolve(UpdatePostService);
 
-    const newPost = await updatePostService.execute({
-      ...request.body,
-    });
+    const userId = request.user.id;
+
+    const newPost = await updatePostService.execute(
+      {
+        ...request.body,
+      },
+      userId,
+    );
 
     response.status(200).json(newPost);
   }
@@ -40,7 +50,9 @@ class PostsController {
 
     const id: string = request.query.id as string;
 
-    const deleted = await deletePostService.execute(id);
+    const userId = request.user.id;
+
+    const deleted = await deletePostService.execute(id, userId);
 
     response.status(204).json(deleted);
   }
