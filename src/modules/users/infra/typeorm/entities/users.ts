@@ -10,6 +10,7 @@ import {
 import Files from '@modules/files/infra/typeorm/entities/files';
 import Posts from '@modules/posts/infra/typeorm/entities/posts';
 import Comments from '@modules/comments/infra/typeorm/entities/comments';
+import Likes from '@modules/likes/infra/typeorm/entities/likes';
 import UserTokens from './userTokens';
 
 @Entity('users')
@@ -62,6 +63,9 @@ class Users {
 
   @OneToMany(() => Comments, comments => comments.user)
   comments: Comments[];
+
+  @OneToMany(() => Likes, likes => likes.user)
+  likes: Likes[];
 }
 
 export default Users;
