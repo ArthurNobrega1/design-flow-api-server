@@ -11,6 +11,7 @@ import Files from '@modules/files/infra/typeorm/entities/files';
 import Posts from '@modules/posts/infra/typeorm/entities/posts';
 import Comments from '@modules/comments/infra/typeorm/entities/comments';
 import Likes from '@modules/likes/infra/typeorm/entities/likes';
+import Follows from '@modules/follows/infra/typeorm/entities/follows';
 import UserTokens from './userTokens';
 
 @Entity('users')
@@ -66,6 +67,12 @@ class Users {
 
   @OneToMany(() => Likes, likes => likes.user)
   likes: Likes[];
+
+  @OneToMany(() => Follows, follows => follows.follower)
+  follower_users: Follows[];
+
+  @OneToMany(() => Follows, follows => follows.following)
+  following_users: Follows[];
 }
 
 export default Users;
