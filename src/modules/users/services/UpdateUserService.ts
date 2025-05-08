@@ -12,7 +12,14 @@ class UpdateUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute(data: IUpdateUserDTO): Promise<Users> {
+  public async execute(data: IUpdateUserDTO, userId: string): Promise<Users> {
+    if (data.id !== userId) {
+      throw new AppError(
+        'Você não tem permissão para editar este usuário',
+        401,
+      );
+    }
+
     const item = await this.usersRepository.findById(data.id);
 
     if (!item) {

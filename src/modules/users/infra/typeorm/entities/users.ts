@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import Files from '@modules/files/infra/typeorm/entities/files';
 import Posts from '@modules/posts/infra/typeorm/entities/posts';
+import Comments from '@modules/comments/infra/typeorm/entities/comments';
 import UserTokens from './userTokens';
 
 @Entity('users')
@@ -58,6 +59,9 @@ class Users {
 
   @OneToMany(() => Posts, posts => posts.user)
   posts: Posts[];
+
+  @OneToMany(() => Comments, comments => comments.user)
+  comments: Comments[];
 }
 
 export default Users;

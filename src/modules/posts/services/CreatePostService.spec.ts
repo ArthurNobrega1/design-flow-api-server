@@ -27,20 +27,24 @@ describe('CreatePost', () => {
       permission: 'anyone',
     });
 
-    const post = await createPostService.execute({
-      title: 'First post',
-      user_id: user.id,
-    });
+    const post = await createPostService.execute(
+      {
+        title: 'First post',
+      },
+      user.id,
+    );
 
     expect(post).toHaveProperty('id');
   });
 
   it('should not be able to create a post with an invalid user_id', async () => {
     await expect(
-      createPostService.execute({
-        title: 'First post',
-        user_id: 'non-existent',
-      }),
+      createPostService.execute(
+        {
+          title: 'First post',
+        },
+        'non-existent-id',
+      ),
     ).rejects.toBeInstanceOf(AppError);
   });
 });

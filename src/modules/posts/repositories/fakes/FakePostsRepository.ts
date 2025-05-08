@@ -10,7 +10,7 @@ class FakePostsRepository implements IPostsRepository {
   private posts: Posts[] = [];
 
   public async create(data: ICreatePostDTO): Promise<Posts> {
-    const post = { ...new Posts(), ...data, id: uuid(), active: true };
+    const post = { ...new Posts(), active: true, ...data, id: uuid() };
     post.created_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     post.updated_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     this.posts.push(post);

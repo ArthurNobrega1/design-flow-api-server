@@ -10,7 +10,7 @@ class FakeUsersRepository implements IUsersRepository {
   private users: Users[] = [];
 
   public async create(data: ICreateUserDTO): Promise<Users> {
-    const user = { ...new Users(), ...data, id: uuid(), active: true };
+    const user = { ...new Users(), active: true, ...data, id: uuid() };
     user.created_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     user.updated_at = parse(timezone(), 'yyyy-MM-dd HH:mm:ss', new Date());
     this.users.push(user);

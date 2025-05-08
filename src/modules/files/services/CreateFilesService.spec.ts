@@ -40,6 +40,7 @@ describe('CreateFilesService', () => {
 
     const files = await createFileService.execute(
       { user_id: user.id, path: 'images/me' },
+      user.id,
       [
         {
           filename: 'me.jpg',
@@ -72,6 +73,7 @@ describe('CreateFilesService', () => {
 
     const files = await createFileService.execute(
       { post_id: post.id, path: 'images/me' },
+      user.id,
       [
         {
           filename: 'me.jpg',
@@ -100,6 +102,7 @@ describe('CreateFilesService', () => {
     await expect(
       createFileService.execute(
         { user_id: user.id, path: 'images/me' },
+        user.id,
         undefined,
       ),
     ).rejects.toBeInstanceOf(AppError);
@@ -117,14 +120,63 @@ describe('CreateFilesService', () => {
     });
 
     await expect(
-      createFileService.execute({ user_id: user.id, path: 'images/me' }, []),
+      createFileService.execute(
+        { user_id: user.id, path: 'images/me' },
+        user.id,
+        [],
+      ),
     ).rejects.toBeInstanceOf(AppError);
   });
 
   it('should not be able to create a file with an invalid user_id', async () => {
+    const user = await fakeUsersRepository.create({
+      email: 'jhonDoe@gmail.com',
+      fullname: 'Jhon Doe',
+      password: 'impossiblepass123',
+      username: 'jhonDoe001',
+      bio: 'just nothing...',
+      birthday: new Date('2025-04-04'),
+      permission: 'anyone',
+    });
     await expect(
       createFileService.execute(
         { user_id: 'non-existent', path: 'images/me' },
+        user.id,
+        [
+          {
+            filename: 'me.jpg',
+            originalname: 'me.jpg',
+            mimetype: 'image/jpeg',
+            path: 'images/me',
+          },
+        ],
+      ),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create a file with an user_id different from the authenticated user', async () => {
+    const user = await fakeUsersRepository.create({
+      email: 'jhonDoe@gmail.com',
+      fullname: 'Jhon Doe',
+      password: 'impossiblepass123',
+      username: 'jhonDoe001',
+      bio: 'just nothing...',
+      birthday: new Date('2025-04-04'),
+      permission: 'anyone',
+    });
+    const user2 = await fakeUsersRepository.create({
+      email: 'jhonDoe2@gmail.com',
+      fullname: 'Jhon Doe',
+      password: 'impossiblepass123',
+      username: 'jhonDoe002',
+      bio: 'just nothing...',
+      birthday: new Date('2025-04-04'),
+      permission: 'anyone',
+    });
+    await expect(
+      createFileService.execute(
+        { user_id: user.id, path: 'images/me' },
+        user2.id,
         [
           {
             filename: 'me.jpg',
@@ -138,9 +190,20 @@ describe('CreateFilesService', () => {
   });
 
   it('should not be able to create a file with an invalid post_id', async () => {
+    const user = await fakeUsersRepository.create({
+      email: 'jhonDoe@gmail.com',
+      fullname: 'Jhon Doe',
+      password: 'impossiblepass123',
+      username: 'jhonDoe001',
+      bio: 'just nothing...',
+      birthday: new Date('2025-04-04'),
+      permission: 'anyone',
+    });
+
     await expect(
       createFileService.execute(
         { post_id: 'invalid-post-id', path: 'images/post' },
+        user.id,
         [
           {
             filename: 'post.jpg',
@@ -154,8 +217,18 @@ describe('CreateFilesService', () => {
   });
 
   it('should not be able to create a file without user_id and post_id', async () => {
+    const user = await fakeUsersRepository.create({
+      email: 'jhonDoe@gmail.com',
+      fullname: 'Jhon Doe',
+      password: 'impossiblepass123',
+      username: 'jhonDoe001',
+      bio: 'just nothing...',
+      birthday: new Date('2025-04-04'),
+      permission: 'anyone',
+    });
+
     await expect(
-      createFileService.execute({ path: 'images/no-owner' }, [
+      createFileService.execute({ path: 'images/no-owner' }, user.id, [
         {
           filename: 'no-owner.jpg',
           originalname: 'no-owner.jpg',
