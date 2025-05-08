@@ -60,7 +60,8 @@ class UsersRepository implements IUsersRepository {
   public async find(search: ISearchUsersDTO): Promise<Users[] | undefined> {
     const query = AppDataSource.getRepository(Users)
       .createQueryBuilder('users')
-      .leftJoinAndSelect('users.user_tokens', 'user_tokens');
+      .leftJoinAndSelect('users.avatar', 'avatar', 'avatar.active = true')
+      .leftJoinAndSelect('users.posts', 'posts', 'posts.active = true');
 
     if (search.id) {
       query.andWhere(`users.id = '${search.id}'`);
@@ -86,9 +87,7 @@ class UsersRepository implements IUsersRepository {
       query.andWhere(`users.permission = '${search.permission}'`);
     }
 
-    if (search.active !== null && search.active !== undefined) {
-      query.andWhere(`users.active = '${search.active}'`);
-    }
+    query.andWhere(`users.active = 'true'`);
 
     query.orderBy('users.created_at', 'DESC');
 

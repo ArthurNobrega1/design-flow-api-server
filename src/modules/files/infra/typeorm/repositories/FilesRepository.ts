@@ -35,10 +35,8 @@ class FilesRepository implements IFilesRepository {
   }
 
   public async find(search: ISearchFilesDTO): Promise<Files[] | undefined> {
-    const query = AppDataSource.getRepository(Files)
-      .createQueryBuilder('files')
-      .leftJoinAndSelect('files.user', 'user')
-      .leftJoinAndSelect('files.post', 'post');
+    const query =
+      AppDataSource.getRepository(Files).createQueryBuilder('files');
 
     if (search.id) {
       query.andWhere(`files.id = '${search.id}'`);
@@ -56,9 +54,7 @@ class FilesRepository implements IFilesRepository {
       query.andWhere(`files.post_id = '${search.post_id}'`);
     }
 
-    if (search.active !== null && search.active !== undefined) {
-      query.andWhere(`files.active = '${search.active}'`);
-    }
+    query.andWhere(`files.active = 'true'`);
 
     query.orderBy('files.created_at', 'DESC');
 
