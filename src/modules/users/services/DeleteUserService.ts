@@ -14,7 +14,14 @@ class DeleteUserService {
     private userTokensRepository: IUserTokensRepository,
   ) {}
 
-  public async execute(id: string): Promise<void> {
+  public async execute(id: string, userId: string): Promise<void> {
+    if (id !== userId) {
+      throw new AppError(
+        'Você não tem permissão para editar este usuário',
+        401,
+      );
+    }
+
     const itens = await this.usersRepository.find({ id });
 
     if (!itens || !itens.length) {

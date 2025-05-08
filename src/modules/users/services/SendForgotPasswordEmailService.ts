@@ -21,6 +21,11 @@ class SendForgotPasswordEmailService {
   ) {}
 
   public async execute(data: ISendForgotPasswordEmailDTO): Promise<void> {
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(data.email)) {
+      throw new AppError('Email inválido', 400);
+    }
+
     const users = await this.usersRepository.find({ email: data.email });
 
     if (!users || !users.length) {
@@ -45,7 +50,7 @@ class SendForgotPasswordEmailService {
         file: forgotPasswordTemplate,
         variables: {
           name: user.fullname,
-          link: `https://localhost:3000/reset-password?token=${token}`,
+          link: `http://localhost:5173/reset-password?token=${token}`,
         },
       },
     });

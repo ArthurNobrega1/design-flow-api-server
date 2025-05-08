@@ -16,13 +16,19 @@ class CreatePostService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute(data: ICreatePostDTO): Promise<Posts> {
-    const user = await this.usersRepository.findById(data.user_id);
+  public async execute(
+    data: Omit<ICreatePostDTO, 'user_id'>,
+    userId: string,
+  ): Promise<Posts> {
+    const user = await this.usersRepository.findById(userId);
     if (!user || !user.active) {
       throw new AppError('Usuário inválido', 400);
     }
 
-    const created = await this.postsRepository.create(data);
+    const created = await this.postsRepository.create({
+      ...data,
+      user_id: userId,
+    });
     return created;
   }
 }

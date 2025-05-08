@@ -20,9 +20,14 @@ class UsersController {
   public async update(request: Request, response: Response): Promise<void> {
     const updateUserService = container.resolve(UpdateUserService);
 
-    const newUser = await updateUserService.execute({
-      ...request.body,
-    });
+    const userId = request.user.id;
+
+    const newUser = await updateUserService.execute(
+      {
+        ...request.body,
+      },
+      userId,
+    );
 
     response.status(200).json(newUser);
   }
@@ -40,7 +45,9 @@ class UsersController {
 
     const id: string = request.query.id as string;
 
-    const deleted = await deleteUserService.execute(id);
+    const userId = request.user.id;
+
+    const deleted = await deleteUserService.execute(id, userId);
 
     response.status(204).json(deleted);
   }
