@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IFilesRepository from '@modules/files/repositories/IFilesRepository';
+import ILikesRepository from '@modules/likes/repositories/ILikesRepository';
 import ICommentsRepository from '@modules/comments/repositories/ICommentsRepository';
 import IStorageProvider from '@shared/providers/StorageProvider/models/IStorageProvider';
 import IPostsRepository from '../repositories/IPostsRepository';
@@ -18,6 +19,9 @@ class DeletePostService {
 
     @inject('FilesRepository')
     private filesRepository: IFilesRepository,
+
+    @inject('LikesRepository')
+    private likesRepository: ILikesRepository,
 
     @inject('CommentsRepository')
     private commentsRepository: ICommentsRepository,
@@ -45,12 +49,32 @@ class DeletePostService {
       );
     }
 
+    const likes = await this.likesRepository.find({
+      post_id: id,
+    });
+    if (likes?.length) {
+      await Promise.all(
+        likes.map(async like => {
+          await this.likesRepository.delete(like.id);
+        }),
+      );
+    }
     const comments = await this.commentsRepository.find({
       post_id: id,
     });
     if (comments?.length) {
       await Promise.all(
         comments.map(async comment => {
+          const commentLikes = await this.likesRepository.find({
+            comment_id: comment.id,
+          });
+          if (commentLikes?.length) {
+            await Promise.all(
+              commentLikes.map(async commentLike => {
+                await this.likesRepository.delete(commentLike.id);
+              }),
+            );
+          }
           await this.commentsRepository.delete(comment.id);
         }),
       );

@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import ILikesRepository from '@modules/likes/repositories/ILikesRepository';
 import ICommentsRepository from '../repositories/ICommentsRepository';
 import Comments from '../infra/typeorm/entities/comments';
 import IUpdateCommentDTO from '../dtos/IUpdateCommentDTO';
@@ -14,6 +15,9 @@ class UpdateCommentService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('LikesRepository')
+    private likesRepository: ILikesRepository,
   ) {}
 
   public async execute(
@@ -43,6 +47,20 @@ class UpdateCommentService {
           400,
         );
       }
+    }
+
+    const likes = await this.likesRepository.find({
+      comment_id: data.id,
+    });
+    if (likes?.length) {
+      await Promise.all(
+        likes.map(async like => {
+          await this.likesRepository.save({
+            ...like,
+            active: false,
+          });
+        }),
+      );
     }
 
     const updated = Object.assign(item, data);

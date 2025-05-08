@@ -39,11 +39,8 @@ class PostsRepository implements IPostsRepository {
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.user', 'user')
       .leftJoinAndSelect('posts.files', 'files', 'files.active = true')
-      .leftJoinAndSelect(
-        'posts.comments',
-        'comments',
-        'comments.active = true',
-      );
+      .leftJoinAndSelect('posts.comments', 'comments', 'comments.active = true')
+      .leftJoinAndSelect('posts.likes', 'likes', 'likes.active = true');
 
     if (search.id) {
       query.andWhere(`posts.id = '${search.id}'`);
