@@ -39,7 +39,8 @@ class CommentsRepository implements ICommentsRepository {
   ): Promise<Comments[] | undefined> {
     const query = AppDataSource.getRepository(Comments)
       .createQueryBuilder('comments')
-      .leftJoinAndSelect('comments.user', 'user');
+      .leftJoinAndSelect('comments.user', 'user')
+      .leftJoinAndSelect('comments.likes', 'likes', 'likes.active = true');
 
     if (search.id) {
       query.andWhere(`comments.id = '${search.id}'`);

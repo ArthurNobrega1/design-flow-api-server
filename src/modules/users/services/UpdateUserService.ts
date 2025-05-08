@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import IFilesRepository from '@modules/files/repositories/IFilesRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import ILikesRepository from '@modules/likes/repositories/ILikesRepository';
 import ICommentsRepository from '@modules/comments/repositories/ICommentsRepository';
 
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -21,6 +22,9 @@ class UpdateUserService {
 
     @inject('FilesRepository')
     private filesRepository: IFilesRepository,
+
+    @inject('LikesRepository')
+    private likesRepository: ILikesRepository,
 
     @inject('PostsRepository')
     private postsRepository: IPostsRepository,
@@ -85,12 +89,38 @@ class UpdateUserService {
       if (posts?.length) {
         await Promise.all(
           posts.map(async post => {
+            const likes = await this.likesRepository.find({
+              post_id: post.id,
+            });
+            if (likes?.length) {
+              await Promise.all(
+                likes.map(async like => {
+                  await this.likesRepository.save({
+                    ...like,
+                    active: false,
+                  });
+                }),
+              );
+            }
             const comments = await this.commentsRepository.find({
               post_id: post.id,
             });
             if (comments?.length) {
               await Promise.all(
                 comments.map(async comment => {
+                  const commentLikes = await this.likesRepository.find({
+                    comment_id: comment.id,
+                  });
+                  if (commentLikes?.length) {
+                    await Promise.all(
+                      commentLikes.map(async commentLike => {
+                        await this.likesRepository.save({
+                          ...commentLike,
+                          active: false,
+                        });
+                      }),
+                    );
+                  }
                   await this.commentsRepository.save({
                     ...comment,
                     active: false,
