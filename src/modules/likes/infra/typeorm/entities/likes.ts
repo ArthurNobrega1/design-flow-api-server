@@ -6,24 +6,25 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  OneToMany,
 } from 'typeorm';
 
+import Posts from '@modules/posts/infra/typeorm/entities/posts';
 import Users from '@modules/users/infra/typeorm/entities/users';
-import Files from '@modules/files/infra/typeorm/entities/files';
 import Comments from '@modules/comments/infra/typeorm/entities/comments';
-import Likes from '@modules/likes/infra/typeorm/entities/likes';
 
-@Entity('posts')
-class Posts {
+@Entity('likes')
+class Likes {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' })
-  title: string;
-
   @Column({ type: 'uuid' })
   user_id: string;
+
+  @Column({ type: 'uuid', nullable: true })
+  post_id: string;
+
+  @Column({ type: 'uuid', nullable: true })
+  comment_id: string;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
@@ -38,21 +39,26 @@ class Posts {
   // Relationship
   //* ***************** *//
 
-  @ManyToOne(() => Users, users => users.posts, {
+  @ManyToOne(() => Users, users => users.likes, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @OneToMany(() => Files, files => files.post)
-  files: Files[];
+  @ManyToOne(() => Posts, posts => posts.likes, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'post_id' })
+  post: Posts;
 
-  @OneToMany(() => Comments, comments => comments.post)
-  comments: Comments[];
-
-  @OneToMany(() => Likes, likes => likes.post)
-  likes: Likes[];
+  @ManyToOne(() => Comments, comments => comments.likes, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'comment_id' })
+  comment: Comments;
 }
 
-export default Posts;
+export default Likes;

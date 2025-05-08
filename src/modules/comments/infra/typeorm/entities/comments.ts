@@ -6,10 +6,12 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 import Users from '@modules/users/infra/typeorm/entities/users';
 import Posts from '@modules/posts/infra/typeorm/entities/posts';
+import Likes from '@modules/likes/infra/typeorm/entities/likes';
 
 @Entity('comments')
 class Comments {
@@ -51,6 +53,9 @@ class Comments {
   })
   @JoinColumn({ name: 'post_id' })
   post: Posts;
+
+  @OneToMany(() => Likes, likes => likes.comment)
+  likes: Likes[];
 }
 
 export default Comments;
