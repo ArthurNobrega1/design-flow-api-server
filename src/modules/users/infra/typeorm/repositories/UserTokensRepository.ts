@@ -28,6 +28,12 @@ class UserTokensRepository implements IUserTokensRepository {
     });
   }
 
+  public async findByUserId(userId: string): Promise<UserTokens[]> {
+    return this.ormRepository.find({
+      where: { user_id: userId, active: true },
+    });
+  }
+
   public async delete(id: string): Promise<void> {
     await this.ormRepository.delete(id);
   }
