@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import ILikesRepository from '@modules/likes/repositories/ILikesRepository';
 import ICommentsRepository from '../repositories/ICommentsRepository';
 
 @injectable()
@@ -12,6 +13,9 @@ class DeleteCommentService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('LikesRepository')
+    private likesRepository: ILikesRepository,
   ) {}
 
   public async execute(id: string, userId: string): Promise<void> {
@@ -30,6 +34,17 @@ class DeleteCommentService {
       throw new AppError(
         'Você não tem permissão para deletar es comentário',
         400,
+      );
+    }
+
+    const likes = await this.likesRepository.find({
+      comment_id: id,
+    });
+    if (likes?.length) {
+      await Promise.all(
+        likes.map(async like => {
+          await this.likesRepository.delete(like.id);
+        }),
       );
     }
 
