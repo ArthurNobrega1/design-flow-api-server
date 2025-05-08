@@ -14,6 +14,8 @@ import IFilesRepository from '@modules/files/repositories/IFilesRepository';
 
 import PostsRepository from '@modules/posts/infra/typeorm/repositories/PostsRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import CommentsRepository from '@modules/comments/infra/typeorm/repositories/CommentsRepository';
+import ICommentsRepository from '@modules/comments/repositories/ICommentsRepository';
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -33,4 +35,9 @@ container.registerSingleton<IFilesRepository>(
 container.registerSingleton<IPostsRepository>(
   'PostsRepository',
   PostsRepository,
+);
+
+container.registerSingleton<ICommentsRepository>(
+  'CommentsRepository',
+  CommentsRepository,
 );

@@ -2,6 +2,8 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import ICommentsRepository from '@modules/comments/repositories/ICommentsRepository';
+import IFilesRepository from '@modules/files/repositories/IFilesRepository';
 import IPostsRepository from '../repositories/IPostsRepository';
 import Posts from '../infra/typeorm/entities/posts';
 import IUpdatePostDTO from '../dtos/IUpdatePostDTO';
@@ -14,6 +16,12 @@ class UpdatePostService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('FilesRepository')
+    private filesRepository: IFilesRepository,
+
+    @inject('CommentsRepository')
+    private commentsRepository: ICommentsRepository,
   ) {}
 
   public async execute(data: IUpdatePostDTO, userId: string): Promise<Posts> {
@@ -38,6 +46,35 @@ class UpdatePostService {
         throw new AppError(
           'Você não tem permissão para editar esta postagem',
           400,
+        );
+      }
+    }
+
+    if (data.active === false) {
+      const comments = await this.commentsRepository.find({
+        post_id: data.id,
+      });
+      if (comments?.length) {
+        await Promise.all(
+          comments.map(async comment => {
+            await this.commentsRepository.save({
+              ...comment,
+              active: false,
+            });
+          }),
+        );
+      }
+      const files = await this.filesRepository.find({
+        post_id: data.id,
+      });
+      if (files?.length) {
+        await Promise.all(
+          files.map(async file => {
+            await this.filesRepository.save({
+              ...file,
+              active: false,
+            });
+          }),
         );
       }
     }

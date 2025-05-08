@@ -38,7 +38,12 @@ class PostsRepository implements IPostsRepository {
     const query = AppDataSource.getRepository(Posts)
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.user', 'user')
-      .leftJoinAndSelect('posts.files', 'files');
+      .leftJoinAndSelect('posts.files', 'files', 'files.active = true')
+      .leftJoinAndSelect(
+        'posts.comments',
+        'comments',
+        'comments.active = true',
+      );
 
     if (search.id) {
       query.andWhere(`posts.id = '${search.id}'`);
@@ -52,9 +57,7 @@ class PostsRepository implements IPostsRepository {
       query.andWhere(`posts.user_id = '${search.user_id}'`);
     }
 
-    if (search.active !== null && search.active !== undefined) {
-      query.andWhere(`posts.active = '${search.active}'`);
-    }
+    query.andWhere(`posts.active = 'true'`);
 
     query.orderBy('posts.created_at', 'DESC');
 
