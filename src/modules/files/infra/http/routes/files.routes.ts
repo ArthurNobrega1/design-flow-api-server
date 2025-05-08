@@ -117,11 +117,6 @@ filesRouter.put(
  *           type: string
  *           format: uuid
  *         description: ID da postagem
- *       - in: query
- *         name: active
- *         schema:
- *           type: boolean
- *         description: Status ativo do arquivo
  *     responses:
  *       200:
  *         description: Lista de arquivos
@@ -134,7 +129,6 @@ filesRouter.get(
       path: Joi.string(),
       user_id: Joi.string().uuid(),
       post_id: Joi.string().uuid(),
-      active: Joi.boolean(),
     },
   }),
   FilesController.show,

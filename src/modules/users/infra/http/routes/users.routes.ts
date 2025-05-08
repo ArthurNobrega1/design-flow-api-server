@@ -154,11 +154,6 @@ usersRouter.put(
  *         schema:
  *           type: string
  *         description: Permissão do usuário
- *       - in: query
- *         name: active
- *         schema:
- *           type: boolean
- *         description: Status ativo do usuário
  *     responses:
  *       200:
  *         description: Informações do usuário
@@ -175,7 +170,6 @@ usersRouter.get(
       username: Joi.string(),
       fullname: Joi.string(),
       permission: Joi.string(),
-      active: Joi.boolean(),
     },
   }),
   UsersController.show,

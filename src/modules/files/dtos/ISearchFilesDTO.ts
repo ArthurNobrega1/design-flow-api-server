@@ -3,5 +3,4 @@ export default interface ISearchFilesDTO {
   path?: string;
   user_id?: string;
   post_id?: string;
-  active?: boolean;
 }

@@ -24,7 +24,7 @@ class UserTokensRepository implements IUserTokensRepository {
 
   public async findByToken(token: string): Promise<UserTokens | null> {
     return this.ormRepository.findOne({
-      where: { token },
+      where: { token, active: true },
     });
   }
 
