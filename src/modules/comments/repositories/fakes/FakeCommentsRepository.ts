@@ -1,6 +1,6 @@
 import timezone from '@shared/utils/timezone';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import Comments from '@modules/comments/infra/typeorm/entities/comments';
 import ICreateCommentDTO from '@modules/comments/dtos/ICreateCommentDTO';
 import ISearchCommentsDTO from '@modules/comments/dtos/ISearchCommentsDTO';

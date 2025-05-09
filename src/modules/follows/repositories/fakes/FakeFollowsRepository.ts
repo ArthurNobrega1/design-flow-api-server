@@ -1,6 +1,6 @@
 import timezone from '@shared/utils/timezone';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import Follows from '@modules/follows/infra/typeorm/entities/follows';
 import ICreateFollowDTO from '@modules/follows/dtos/ICreateFollowDTO';
 import ISearchFollowsDTO from '@modules/follows/dtos/ISearchFollowsDTO';
