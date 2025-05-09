@@ -64,27 +64,37 @@ class UsersRepository implements IUsersRepository {
       .leftJoinAndSelect('users.posts', 'posts', 'posts.active = true');
 
     if (search.id) {
-      query.andWhere(`users.id = '${search.id}'`);
+      query.andWhere('users.id = :id', { id: search.id });
     }
 
     if (search.birthday) {
-      query.andWhere(`users.birthday = '${search.birthday}'`);
+      query.andWhere('users.birthday = :birthday', {
+        birthday: search.birthday,
+      });
     }
 
     if (search.email) {
-      query.andWhere(`users.email = '${search.email}'`);
+      query.andWhere('users.email = :email', {
+        email: search.email,
+      });
     }
 
     if (search.username) {
-      query.andWhere(`users.username = '${search.username}'`);
+      query.andWhere('users.username = :username', {
+        username: search.username,
+      });
     }
 
     if (search.fullname) {
-      query.andWhere(`users.fullname = '${search.fullname}'`);
+      query.andWhere('users.fullname = :fullname', {
+        fullname: search.fullname,
+      });
     }
 
     if (search.permission) {
-      query.andWhere(`users.permission = '${search.permission}'`);
+      query.andWhere('users.permission = :permission', {
+        permission: search.permission,
+      });
     }
 
     query.andWhere(`users.active = 'true'`);

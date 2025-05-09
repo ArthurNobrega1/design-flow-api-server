@@ -43,11 +43,15 @@ class CommentsRepository implements ICommentsRepository {
       .leftJoinAndSelect('comments.likes', 'likes', 'likes.active = true');
 
     if (search.id) {
-      query.andWhere(`comments.id = '${search.id}'`);
+      query.andWhere('comments.id = :id', {
+        id: search.id,
+      });
     }
 
     if (search.user_id) {
-      query.andWhere(`comments.user_id = '${search.user_id}'`);
+      query.andWhere('comments.user_id = :user_id', {
+        user_id: search.user_id,
+      });
     }
 
     query.andWhere(`comments.active = 'true'`);

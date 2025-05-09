@@ -49,15 +49,21 @@ class FollowsRepository implements IFollowsRepository {
       );
 
     if (search.id) {
-      query.andWhere(`follows.id = '${search.id}'`);
+      query.andWhere('follows.id = :id', {
+        id: search.id,
+      });
     }
 
     if (search.follower_id) {
-      query.andWhere(`follows.follower_id = '${search.follower_id}'`);
+      query.andWhere('follows.follower_id = :follower_id', {
+        follower_id: search.follower_id,
+      });
     }
 
     if (search.following_id) {
-      query.andWhere(`follows.following_id = '${search.following_id}'`);
+      query.andWhere('follows.following_id = :following_id', {
+        following_id: search.following_id,
+      });
     }
 
     query.andWhere(`follows.active = 'true'`);
