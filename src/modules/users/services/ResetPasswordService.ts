@@ -29,7 +29,7 @@ class ResetPasswordService {
     }
 
     if (!userToken || !userToken.active) {
-      throw new AppError('Token do usuário não encontrado', 404);
+      throw new AppError('Token expirado', 401);
     }
 
     const user = await this.usersRepository.findById(userToken.user_id);

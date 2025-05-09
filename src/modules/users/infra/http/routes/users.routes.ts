@@ -87,6 +87,8 @@ usersRouter.post(
  *                 type: string
  *               permission:
  *                 type: string
+ *               is_private:
+ *                 type: boolean
  *               active:
  *                 type: boolean
  *     responses:
@@ -106,6 +108,7 @@ usersRouter.put(
       username: Joi.string(),
       fullname: Joi.string(),
       permission: Joi.string(),
+      is_private: Joi.boolean(),
       active: Joi.boolean(),
     },
   }),
@@ -154,6 +157,11 @@ usersRouter.put(
  *         schema:
  *           type: string
  *         description: Permissão do usuário
+ *       - in: query
+ *         name: active
+ *         schema:
+ *           type: boolean
+ *         description: Status ativo do usuário
  *     responses:
  *       200:
  *         description: Informações do usuário
