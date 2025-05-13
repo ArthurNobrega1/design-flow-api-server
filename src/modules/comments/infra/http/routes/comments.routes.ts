@@ -28,6 +28,9 @@ commentsRouter.use(AuthMiddleware);
  *               post_id:
  *                 type: string
  *                 format: uuid
+ *               parent_comment_id:
+ *                 type: string
+ *                 format: uuid
  *               active:
  *                 type: boolean
  *     responses:
@@ -41,6 +44,7 @@ commentsRouter.post(
     [Segments.BODY]: {
       content: Joi.string().required(),
       post_id: Joi.string().uuid().required(),
+      parent_comment_id: Joi.string().uuid(),
       active: Joi.boolean(),
     },
   }),
