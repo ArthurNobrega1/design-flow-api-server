@@ -185,6 +185,21 @@ usersRouter.get(
 
 /**
  * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Retorna os dados do usuário autenticado
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do usuário autenticado
+ */
+
+usersRouter.get('/me', AuthMiddleware, UsersController.me);
+
+/**
+ * @swagger
  * /users/:
  *   delete:
  *     summary: Remove um usuário
