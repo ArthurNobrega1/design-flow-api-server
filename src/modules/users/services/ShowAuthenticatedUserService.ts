@@ -12,11 +12,13 @@ class ShowAuthenticatedUserService {
   ) {}
 
   public async execute(userId: string): Promise<Users> {
-    const user = await this.usersRepository.findById(userId);
+    const users = await this.usersRepository.find({ id: userId });
 
-    if (!user) {
+    if (!users?.length) {
       throw new AppError('Usuário não encontrado.', 404);
     }
+
+    const user = users[0];
 
     return user;
   }
