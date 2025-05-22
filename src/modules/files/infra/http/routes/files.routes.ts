@@ -70,6 +70,12 @@ filesRouter.post(
  *               id:
  *                 type: string
  *                 format: uuid
+ *               user_id:
+ *                 type: string
+ *                 format: uuid
+ *               post_id:
+ *                 type: string
+ *                 format: uuid
  *               active:
  *                 type: boolean
  *     responses:
@@ -83,6 +89,8 @@ filesRouter.put(
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().uuid().required(),
+      user_id: Joi.string().uuid().allow(null),
+      post_id: Joi.string().uuid().allow(null),
       active: Joi.boolean(),
     },
   }),
