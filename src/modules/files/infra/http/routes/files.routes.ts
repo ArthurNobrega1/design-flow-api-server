@@ -27,6 +27,9 @@ filesRouter.use(AuthMiddleware);
  *           schema:
  *             type: object
  *             properties:
+ *               user_id:
+ *                 type: string
+ *                 format: uuid
  *               post_id:
  *                 type: string
  *                 format: uuid
@@ -41,6 +44,7 @@ filesRouter.post(
   upload.array('files'),
   celebrate({
     [Segments.BODY]: {
+      user_id: Joi.string().uuid(),
       post_id: Joi.string().uuid(),
       active: Joi.boolean(),
     },
