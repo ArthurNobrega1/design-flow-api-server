@@ -40,7 +40,12 @@ class PostsRepository implements IPostsRepository {
       .leftJoinAndSelect('posts.user', 'user')
       .leftJoinAndSelect('posts.files', 'files', 'files.active = true')
       .leftJoinAndSelect('posts.comments', 'comments', 'comments.active = true')
-      .leftJoinAndSelect('posts.likes', 'likes', 'likes.active = true');
+      .leftJoinAndSelect(
+        'comments.likes',
+        'commentLikes',
+        'commentLikes.active = true',
+      )
+      .leftJoinAndSelect('posts.likes', 'postLikes', 'postLikes.active = true');
 
     if (search.id) {
       query.andWhere('posts.id = :id', {

@@ -41,10 +41,11 @@ class CommentsRepository implements ICommentsRepository {
       .createQueryBuilder('comments')
       .leftJoinAndSelect('comments.user', 'user')
       .leftJoinAndSelect('comments.likes', 'likes', 'likes.active = true')
+      .leftJoinAndSelect('comments.replies', 'replies', 'replies.active = true')
       .leftJoinAndSelect(
-        'comments.replies',
-        'replies',
-        'replies.active = true',
+        'replies.likes',
+        'repliesLikes',
+        'repliesLikes.active = true',
       );
 
     if (search.id) {

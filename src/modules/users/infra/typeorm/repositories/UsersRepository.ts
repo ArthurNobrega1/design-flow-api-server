@@ -61,7 +61,8 @@ class UsersRepository implements IUsersRepository {
     const query = AppDataSource.getRepository(Users)
       .createQueryBuilder('users')
       .leftJoinAndSelect('users.avatar', 'avatar', 'avatar.active = true')
-      .leftJoinAndSelect('users.posts', 'posts', 'posts.active = true');
+      .leftJoinAndSelect('users.posts', 'posts', 'posts.active = true')
+      .leftJoinAndSelect('posts.files', 'files', 'files.active = true');
 
     if (search.id) {
       query.andWhere('users.id = :id', { id: search.id });
