@@ -14,7 +14,7 @@ class ShowAuthenticatedUserService {
   public async execute(userId: string): Promise<Users> {
     const users = await this.usersRepository.find({ id: userId });
 
-    if (!users?.length) {
+    if (!users?.length || !users[0].active) {
       throw new AppError('Usuário não encontrado.', 404);
     }
 

@@ -53,7 +53,7 @@ class UpdateUserService {
 
     if (data.email) {
       const email = await this.usersRepository.find({ email: data.email });
-      if (email && email.length) {
+      if (email?.length && email[0].active) {
         throw new AppError('Email já registrado', 400);
       }
     }
@@ -62,7 +62,7 @@ class UpdateUserService {
       const username = await this.usersRepository.find({
         username: data.username,
       });
-      if (username && username.length) {
+      if (username?.length && username[0].active) {
         throw new AppError('Nome de usuário já registrado', 400);
       }
     }

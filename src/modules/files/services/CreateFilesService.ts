@@ -41,6 +41,15 @@ class CreateFilesService {
       );
     }
 
+    let realFiles: IFileDTO[] = [];
+
+    if (!Array.isArray(files)) {
+      const firstKey = Object.keys(files)[0];
+      realFiles = files[firstKey];
+    } else {
+      realFiles = files;
+    }
+
     if (data.user_id) {
       if (data.user_id !== userId) {
         throw new AppError(
@@ -49,9 +58,22 @@ class CreateFilesService {
         );
       }
 
-      const user = await this.usersRepository.findById(data.user_id);
-      if (!user || !user.active) {
+      const users = await this.usersRepository.find({ id: data.user_id });
+      if (!users?.length || !users[0].active) {
         throw new AppError('Usuário inválido', 400);
+      }
+
+      const user = users[0];
+
+      if (user.avatar && user.avatar.active) {
+        throw new AppError('Usuário já possui um avatar', 400);
+      }
+
+      if (realFiles.length > 1) {
+        throw new AppError(
+          'Usuário não pode enviar mais de um arquivo de avatar',
+          400,
+        );
       }
     }
 
@@ -66,15 +88,21 @@ class CreateFilesService {
           400,
         );
       }
-    }
 
-    let realFiles: IFileDTO[] = [];
+      const existingFiles = await this.filesRepository.find({
+        post_id: data.post_id,
+      });
 
-    if (!Array.isArray(files)) {
-      const firstKey = Object.keys(files)[0];
-      realFiles = files[firstKey];
-    } else {
-      realFiles = files;
+      const existingFilesCount = existingFiles?.length || 0;
+      const newFilesCount = realFiles.length;
+      const totalFiles = existingFilesCount + newFilesCount;
+
+      if (totalFiles > 4) {
+        throw new AppError(
+          `Limite de 4 arquivos por postagem excedido. Arquivos existentes: ${existingFilesCount}, tentando adicionar: ${newFilesCount}`,
+          400,
+        );
+      }
     }
 
     const createdFiles = await Promise.all(
@@ -82,7 +110,6 @@ class CreateFilesService {
         const savedFilename = await this.storageProvider.saveFile(
           file.filename,
         );
-
         const created = await this.filesRepository.create({
           ...data,
           path: savedFilename,

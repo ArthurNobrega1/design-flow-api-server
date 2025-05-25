@@ -48,7 +48,7 @@ class DeleteUserService {
 
     const itens = await this.usersRepository.find({ id });
 
-    if (!itens || !itens.length) {
+    if (!itens?.length) {
       throw new AppError('Usuário não encontrado', 404);
     }
 

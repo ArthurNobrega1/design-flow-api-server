@@ -41,7 +41,7 @@ filesRouter.use(AuthMiddleware);
  */
 filesRouter.post(
   '/',
-  upload.array('files'),
+  upload.array('files', 4),
   celebrate({
     [Segments.BODY]: {
       user_id: Joi.string().uuid(),
