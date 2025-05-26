@@ -34,7 +34,7 @@ class CreateFollowService {
       throw new AppError('Usuário a ser seguido inválido', 400);
     }
 
-    const isAccepted = !follower.is_private;
+    const isAccepted = !following.is_private;
 
     const created = await this.followsRepository.create({
       ...data,
