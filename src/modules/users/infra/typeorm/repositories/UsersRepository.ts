@@ -81,9 +81,12 @@ class UsersRepository implements IUsersRepository {
     }
 
     if (search.username) {
-      query.andWhere('users.username LIKE :username', {
-        username: `%${search.username}%`,
-      });
+      query.andWhere(
+        'LOWER(UNACCENT(users.username)) LIKE LOWER(UNACCENT(:username))',
+        {
+          username: `%${search.username}%`,
+        },
+      );
     }
 
     if (search.fullname) {
