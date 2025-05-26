@@ -81,8 +81,8 @@ class UsersRepository implements IUsersRepository {
     }
 
     if (search.username) {
-      query.andWhere('users.username = :username', {
-        username: search.username,
+      query.andWhere('users.username LIKE :username', {
+        username: `%${search.username}%`,
       });
     }
 
