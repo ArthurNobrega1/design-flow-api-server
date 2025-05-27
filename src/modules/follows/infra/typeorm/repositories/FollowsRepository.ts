@@ -43,9 +43,19 @@ class FollowsRepository implements IFollowsRepository {
         'follower.active = true',
       )
       .leftJoinAndSelect(
+        'follower.avatar',
+        'follower_avatar',
+        'follower_avatar.active = true',
+      )
+      .leftJoinAndSelect(
         'follows.following',
         'following',
         'following.active = true',
+      )
+      .leftJoinAndSelect(
+        'following.avatar',
+        'following_avatar',
+        'following_avatar.active = true',
       );
 
     if (search.id) {
