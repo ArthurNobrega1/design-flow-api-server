@@ -107,8 +107,6 @@ class UpdatePostService {
           }),
         );
       }
-    } else if (data.user_id) {
-      throw new AppError('Você não pode alterar o usuário desta postagem', 400);
     }
 
     const updated = Object.assign(item, data);

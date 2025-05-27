@@ -65,9 +65,6 @@ postsRouter.post(
  *                 type: string
  *               active:
  *                 type: boolean
- *               user_id:
- *                 type: string
- *                 format: uuid
  *     responses:
  *       200:
  *         description: Postagem atualizada com sucesso
@@ -80,7 +77,6 @@ postsRouter.put(
       id: Joi.string().uuid().required(),
       title: Joi.string(),
       active: Joi.boolean(),
-      user_id: Joi.string().uuid().allow(null),
     },
   }),
   PostsController.update,
