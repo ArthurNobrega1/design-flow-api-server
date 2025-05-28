@@ -33,8 +33,6 @@ filesRouter.use(AuthMiddleware);
  *               post_id:
  *                 type: string
  *                 format: uuid
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Arquivo criado com sucesso
@@ -46,7 +44,6 @@ filesRouter.post(
     [Segments.BODY]: {
       user_id: Joi.string().uuid(),
       post_id: Joi.string().uuid(),
-      active: Joi.boolean(),
     },
   }),
   FilesController.create,

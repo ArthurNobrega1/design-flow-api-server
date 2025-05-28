@@ -31,10 +31,6 @@ const usersRouter = Router();
  *                 type: string
  *               birthday:
  *                 type: string
- *               permission:
- *                 type: string
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -50,8 +46,6 @@ usersRouter.post(
       username: Joi.string().required(),
       fullname: Joi.string().required(),
       password: Joi.string().required(),
-      permission: Joi.string().allow(null),
-      active: Joi.boolean(),
     },
   }),
   UsersController.create,

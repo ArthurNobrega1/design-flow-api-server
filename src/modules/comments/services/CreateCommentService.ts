@@ -34,10 +34,18 @@ class CreateCommentService {
       throw new AppError('Postagem inválida', 400);
     }
 
-    const created = await this.commentsRepository.create({
+    const item = await this.commentsRepository.create({
       ...data,
       user_id: userId,
     });
+
+    const createds = await this.commentsRepository.find({ id: item.id });
+
+    if (!createds?.length) {
+      throw new AppError('Erro ao criar comentário', 400);
+    }
+
+    const created = createds[0];
     return created;
   }
 }

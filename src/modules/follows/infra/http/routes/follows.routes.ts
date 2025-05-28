@@ -26,8 +26,6 @@ followsRouter.use(AuthMiddleware);
  *               following_id:
  *                 type: string
  *                 format: uuid
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Relação de Seguidor/Seguindo criada com sucesso
@@ -38,7 +36,6 @@ followsRouter.post(
   celebrate({
     [Segments.BODY]: {
       following_id: Joi.string().uuid().required(),
-      active: Joi.boolean(),
     },
   }),
   FollowsController.create,

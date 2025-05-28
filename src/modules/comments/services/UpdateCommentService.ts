@@ -20,6 +20,37 @@ class UpdateCommentService {
     private likesRepository: ILikesRepository,
   ) {}
 
+  private async deactivateRepliesAndLikes(commentId: string): Promise<void> {
+    if (!commentId) {
+      return;
+    }
+
+    const likes = await this.likesRepository.find({ comment_id: commentId });
+    if (likes?.length) {
+      await Promise.all(
+        likes.map(async like => {
+          await this.likesRepository.save({ ...like, active: false });
+        }),
+      );
+    }
+
+    const replies = await this.commentsRepository.find({
+      parent_comment_id: commentId,
+    });
+
+    if (replies?.length) {
+      await Promise.all(
+        replies.map(async reply => {
+          if (reply.id && reply.id !== commentId) {
+            await this.deactivateRepliesAndLikes(reply.id);
+          }
+
+          await this.commentsRepository.save({ ...reply, active: false });
+        }),
+      );
+    }
+  }
+
   public async execute(
     data: IUpdateCommentDTO,
     userId: string,
@@ -49,18 +80,8 @@ class UpdateCommentService {
       }
     }
 
-    const likes = await this.likesRepository.find({
-      comment_id: data.id,
-    });
-    if (likes?.length) {
-      await Promise.all(
-        likes.map(async like => {
-          await this.likesRepository.save({
-            ...like,
-            active: false,
-          });
-        }),
-      );
+    if (data.active === false) {
+      await this.deactivateRepliesAndLikes(data.id);
     }
 
     const updated = Object.assign(item, data);

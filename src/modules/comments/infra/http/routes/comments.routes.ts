@@ -31,8 +31,6 @@ commentsRouter.use(AuthMiddleware);
  *               parent_comment_id:
  *                 type: string
  *                 format: uuid
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Comentário criado com sucesso
@@ -45,7 +43,6 @@ commentsRouter.post(
       content: Joi.string().required(),
       post_id: Joi.string().uuid().required(),
       parent_comment_id: Joi.string().uuid(),
-      active: Joi.boolean(),
     },
   }),
   CommentsController.create,
@@ -71,9 +68,6 @@ commentsRouter.post(
  *                 format: uuid
  *               content:
  *                 type: string
- *               post_id:
- *                 type: string
- *                 format: uuid
  *               active:
  *                 type: boolean
  *     responses:
@@ -87,7 +81,6 @@ commentsRouter.put(
     [Segments.BODY]: {
       id: Joi.string().uuid().required(),
       content: Joi.string(),
-      post_id: Joi.string().uuid(),
       active: Joi.boolean(),
     },
   }),
@@ -121,6 +114,12 @@ commentsRouter.put(
  *           type: string
  *           format: uuid
  *         description: ID do post
+ *       - in: query
+ *         name: parent_comment_id
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID do comentário pai
  *     responses:
  *       200:
  *         description: Lista de comentários
@@ -133,6 +132,7 @@ commentsRouter.get(
       id: Joi.string().uuid(),
       user_id: Joi.string().uuid(),
       post_id: Joi.string().uuid(),
+      parent_comment_id: Joi.string().uuid(),
     },
   }),
   CommentsController.show,

@@ -46,6 +46,11 @@ class CommentsRepository implements ICommentsRepository {
         'replies.likes',
         'repliesLikes',
         'repliesLikes.active = true',
+      )
+      .leftJoinAndSelect(
+        'replies.user',
+        'repliesUser',
+        'repliesUser.active = true',
       );
 
     if (search.id) {
@@ -57,6 +62,12 @@ class CommentsRepository implements ICommentsRepository {
     if (search.user_id) {
       query.andWhere('comments.user_id = :user_id', {
         user_id: search.user_id,
+      });
+    }
+
+    if (search.parent_comment_id) {
+      query.andWhere('comments.parent_comment_id = :parent_comment_id', {
+        parent_comment_id: search.parent_comment_id,
       });
     }
 

@@ -5,6 +5,4 @@ export default interface ICreateUserDTO {
   username: string;
   fullname: string;
   password: string;
-  permission?: string;
-  active?: boolean;
 }
