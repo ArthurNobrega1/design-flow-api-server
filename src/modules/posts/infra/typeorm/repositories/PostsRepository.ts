@@ -38,6 +38,7 @@ class PostsRepository implements IPostsRepository {
     const query = AppDataSource.getRepository(Posts)
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar', 'avatar.active = true')
       .leftJoinAndSelect('posts.files', 'files', 'files.active = true')
       .leftJoinAndSelect('posts.comments', 'comments', 'comments.active = true')
       .leftJoinAndSelect(
