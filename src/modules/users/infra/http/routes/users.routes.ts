@@ -31,10 +31,6 @@ const usersRouter = Router();
  *                 type: string
  *               birthday:
  *                 type: string
- *               permission:
- *                 type: string
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -50,8 +46,6 @@ usersRouter.post(
       username: Joi.string().required(),
       fullname: Joi.string().required(),
       password: Joi.string().required(),
-      permission: Joi.string().allow(null),
-      active: Joi.boolean(),
     },
   }),
   UsersController.create,
@@ -87,6 +81,8 @@ usersRouter.post(
  *                 type: string
  *               permission:
  *                 type: string
+ *               is_private:
+ *                 type: boolean
  *               active:
  *                 type: boolean
  *     responses:
@@ -106,6 +102,7 @@ usersRouter.put(
       username: Joi.string(),
       fullname: Joi.string(),
       permission: Joi.string(),
+      is_private: Joi.boolean(),
       active: Joi.boolean(),
     },
   }),
@@ -154,6 +151,11 @@ usersRouter.put(
  *         schema:
  *           type: string
  *         description: Permissão do usuário
+ *       - in: query
+ *         name: active
+ *         schema:
+ *           type: boolean
+ *         description: Status ativo do usuário
  *     responses:
  *       200:
  *         description: Informações do usuário
@@ -174,6 +176,21 @@ usersRouter.get(
   }),
   UsersController.show,
 );
+
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Retorna os dados do usuário autenticado
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do usuário autenticado
+ */
+
+usersRouter.get('/me', AuthMiddleware, UsersController.me);
 
 /**
  * @swagger

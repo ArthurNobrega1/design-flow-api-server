@@ -28,8 +28,6 @@ likesRouter.use(AuthMiddleware);
  *               comment_id:
  *                 type: string
  *                 format: uuid
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Curtida criada com sucesso
@@ -40,7 +38,6 @@ likesRouter.post(
     [Segments.BODY]: {
       post_id: Joi.string().uuid(),
       comment_id: Joi.string().uuid(),
-      active: Joi.boolean(),
     },
   }),
   LikesController.create,

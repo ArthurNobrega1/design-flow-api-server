@@ -25,8 +25,6 @@ postsRouter.use(AuthMiddleware);
  *             properties:
  *               title:
  *                 type: string
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Postagem criada com sucesso
@@ -37,7 +35,6 @@ postsRouter.post(
   celebrate({
     [Segments.BODY]: {
       title: Joi.string().required(),
-      active: Joi.boolean(),
     },
   }),
   PostsController.create,

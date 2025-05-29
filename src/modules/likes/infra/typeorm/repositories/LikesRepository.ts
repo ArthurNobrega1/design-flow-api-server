@@ -39,19 +39,27 @@ class LikesRepository implements ILikesRepository {
       AppDataSource.getRepository(Likes).createQueryBuilder('likes');
 
     if (search.id) {
-      query.andWhere(`likes.id = '${search.id}'`);
+      query.andWhere('likes.id = :id', {
+        id: search.id,
+      });
     }
 
     if (search.user_id) {
-      query.andWhere(`likes.user_id = '${search.user_id}'`);
+      query.andWhere('likes.user_id = :user_id', {
+        user_id: search.user_id,
+      });
     }
 
     if (search.post_id) {
-      query.andWhere(`likes.post_id = '${search.post_id}'`);
+      query.andWhere('likes.post_id = :post_id', {
+        post_id: search.post_id,
+      });
     }
 
     if (search.comment_id) {
-      query.andWhere(`likes.comment_id = '${search.comment_id}'`);
+      query.andWhere('likes.post_id = :post_id', {
+        post_id: search.post_id,
+      });
     }
 
     query.andWhere(`likes.active = 'true'`);

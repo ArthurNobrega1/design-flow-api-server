@@ -1,7 +1,7 @@
 import UserTokens from '@modules/users/infra/typeorm/entities/userTokens';
 import timezone from '@shared/utils/timezone';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import IUserTokensRepository from '../IUserTokensRepository';
 
 class FakeUserTokensRepository implements IUserTokensRepository {

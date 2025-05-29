@@ -1,6 +1,6 @@
 import timezone from '@shared/utils/timezone';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import Likes from '@modules/likes/infra/typeorm/entities/likes';
 import ISearchLikesDTO from '@modules/likes/dtos/ISearchLikesDTO';
 import ICreateLikeDTO from '@modules/likes/dtos/ICreateLikeDTO';

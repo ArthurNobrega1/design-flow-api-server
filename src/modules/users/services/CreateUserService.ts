@@ -29,14 +29,14 @@ class CreateUserService {
     const usersSameEmail = await this.usersRepository.find({
       email: data.email,
     });
-    if (usersSameEmail && usersSameEmail.length) {
+    if (usersSameEmail?.length && usersSameEmail[0].active) {
       throw new AppError('Email já registrado', 400);
     }
 
     const usersSameUsername = await this.usersRepository.find({
       username: data.username,
     });
-    if (usersSameUsername && usersSameUsername.length) {
+    if (usersSameUsername?.length && usersSameUsername[0].active) {
       throw new AppError('Nome de usuário já registrado', 400);
     }
 

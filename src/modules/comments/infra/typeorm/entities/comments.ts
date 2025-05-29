@@ -27,6 +27,9 @@ class Comments {
   @Column({ type: 'uuid' })
   post_id: string;
 
+  @Column({ type: 'uuid', nullable: true })
+  parent_comment_id: string;
+
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
@@ -53,6 +56,18 @@ class Comments {
   })
   @JoinColumn({ name: 'post_id' })
   post: Posts;
+
+  @ManyToOne(() => Comments, comment => comment.replies, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'parent_comment_id' })
+  // eslint-disable-next-line no-use-before-define
+  parent_comment: Comments;
+
+  @OneToMany(() => Comments, comment => comment.parent_comment)
+  // eslint-disable-next-line no-use-before-define
+  replies: Comments[];
 
   @OneToMany(() => Likes, likes => likes.comment)
   likes: Likes[];

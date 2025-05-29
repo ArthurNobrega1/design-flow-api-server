@@ -22,7 +22,7 @@ class Posts {
   @Column({ type: 'varchar' })
   title: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: true })
   user_id: string;
 
   @Column({ type: 'boolean', default: true })

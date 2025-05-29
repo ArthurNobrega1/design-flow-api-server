@@ -38,20 +38,32 @@ class PostsRepository implements IPostsRepository {
     const query = AppDataSource.getRepository(Posts)
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.user', 'user')
+      .leftJoinAndSelect('user.avatar', 'avatar', 'avatar.active = true')
       .leftJoinAndSelect('posts.files', 'files', 'files.active = true')
       .leftJoinAndSelect('posts.comments', 'comments', 'comments.active = true')
-      .leftJoinAndSelect('posts.likes', 'likes', 'likes.active = true');
+      .leftJoinAndSelect(
+        'comments.likes',
+        'commentLikes',
+        'commentLikes.active = true',
+      )
+      .leftJoinAndSelect('posts.likes', 'postLikes', 'postLikes.active = true');
 
     if (search.id) {
-      query.andWhere(`posts.id = '${search.id}'`);
+      query.andWhere('posts.id = :id', {
+        id: search.id,
+      });
     }
 
     if (search.title) {
-      query.andWhere(`posts.title = '${search.title}'`);
+      query.andWhere('posts.title = :title', {
+        title: search.title,
+      });
     }
 
     if (search.user_id) {
-      query.andWhere(`posts.user_id = '${search.user_id}'`);
+      query.andWhere('posts.user_id = :user_id', {
+        user_id: search.user_id,
+      });
     }
 
     query.andWhere(`posts.active = 'true'`);

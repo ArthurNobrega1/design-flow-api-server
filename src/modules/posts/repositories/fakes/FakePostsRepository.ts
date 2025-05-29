@@ -1,6 +1,6 @@
 import timezone from '@shared/utils/timezone';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import Posts from '@modules/posts/infra/typeorm/entities/posts';
 import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
 import ISearchPostsDTO from '@modules/posts/dtos/ISearchPostsDTO';

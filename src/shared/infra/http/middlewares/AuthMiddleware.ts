@@ -32,7 +32,7 @@ export default function AuthMiddleware(
       id: sub,
     };
     return next();
-  } catch (error) {
-    throw new AppError(`Token inválido: ${error}`, 401);
+  } catch {
+    throw new AppError('Sessão expirada', 401);
   }
 }

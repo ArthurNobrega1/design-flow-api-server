@@ -10,6 +10,8 @@ import AppError from '@shared/errors/AppError';
 import { container } from 'tsyringe';
 import ILoggerProvider from '@shared/providers/LoggerProvider/models/ILoggerProvider';
 import { isCelebrateError } from 'celebrate';
+import { MulterError } from 'multer';
+import { MAX_FILE_SIZE, MAX_FILES_COUNT } from '@config/upload';
 import routes from './routes/index';
 import setupSwagger from './swagger';
 
@@ -39,6 +41,24 @@ app.use(
       response
         .status(400)
         .json({ message: 'Erro de validação', details: errorDetails });
+      return;
+    }
+
+    if (err instanceof MulterError) {
+      let message = '';
+
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        message = `Arquivo excede o tamanho máximo permitido de ${MAX_FILE_SIZE}MB.`;
+      } else if (err.code === 'LIMIT_FILE_COUNT') {
+        message = `Número máximo de arquivos excedido. Limite: ${MAX_FILES_COUNT} arquivos por requisição.`;
+      } else if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+        message = 'Campo de arquivo inesperado.';
+      } else {
+        message = `Erro no upload: ${err.message}`;
+      }
+
+      logger.error(message);
+      response.status(400).json({ message });
       return;
     }
 

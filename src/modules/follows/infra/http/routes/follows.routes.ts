@@ -2,18 +2,18 @@ import { Router } from 'express';
 
 import { celebrate, Segments, Joi } from 'celebrate';
 import AuthMiddleware from '@shared/infra/http/middlewares/AuthMiddleware';
-import CommentsController from '../controllers/CommentsController';
+import FollowsController from '../controllers/FollowsController';
 
-const commentsRouter = Router();
+const followsRouter = Router();
 
-commentsRouter.use(AuthMiddleware);
+followsRouter.use(AuthMiddleware);
 
 /**
  * @swagger
- * /comments/:
+ * /follows/:
  *   post:
- *     summary: Cria um novo comentário
- *     tags: [Comments]
+ *     summary: Cria uma nova relação de Seguidor/Seguindo
+ *     tags: [Follows]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -23,37 +23,30 @@ commentsRouter.use(AuthMiddleware);
  *           schema:
  *             type: object
  *             properties:
- *               content:
- *                 type: string
- *               post_id:
- *                 type: string
- *                 format: uuid
- *               parent_comment_id:
+ *               following_id:
  *                 type: string
  *                 format: uuid
  *     responses:
  *       201:
- *         description: Comentário criado com sucesso
+ *         description: Relação de Seguidor/Seguindo criada com sucesso
  */
 
-commentsRouter.post(
+followsRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      content: Joi.string().required(),
-      post_id: Joi.string().uuid().required(),
-      parent_comment_id: Joi.string().uuid(),
+      following_id: Joi.string().uuid().required(),
     },
   }),
-  CommentsController.create,
+  FollowsController.create,
 );
 
 /**
  * @swagger
- * /comments/:
+ * /follows/:
  *   put:
- *     summary: Atualiza um comentário existente
- *     tags: [Comments]
+ *     summary: Atualiza a relação de Seguidor/Seguindo
+ *     tags: [Follows]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -66,33 +59,39 @@ commentsRouter.post(
  *               id:
  *                 type: string
  *                 format: uuid
- *               content:
+ *               follower_id:
  *                 type: string
+ *                 format: uuid
+ *               following_id:
+ *                 type: string
+ *                 format: uuid
+ *               is_accepted:
+ *                 type: boolean
  *               active:
  *                 type: boolean
  *     responses:
  *       200:
- *         description: Comentário atualizado com sucesso
+ *         description: Relação de Seguidor/Seguindo atualizada com sucesso
  */
 
-commentsRouter.put(
+followsRouter.put(
   '/',
   celebrate({
     [Segments.BODY]: {
       id: Joi.string().uuid().required(),
-      content: Joi.string(),
+      is_accepted: Joi.boolean(),
       active: Joi.boolean(),
     },
   }),
-  CommentsController.update,
+  FollowsController.update,
 );
 
 /**
  * @swagger
- * /comments/:
+ * /follows/:
  *   get:
- *     summary: Obtém comentários filtrados
- *     tags: [Comments]
+ *     summary: Obtém relações de Seguidor/Seguindo filtradas
+ *     tags: [Follows]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -101,49 +100,42 @@ commentsRouter.put(
  *         schema:
  *           type: string
  *           format: uuid
- *         description: ID do comentário
+ *         description: ID da relação de follow
  *       - in: query
- *         name: user_id
+ *         name: follower_id
  *         schema:
  *           type: string
  *           format: uuid
- *         description: ID do usuário
+ *         description: ID do seguidor
  *       - in: query
- *         name: post_id
+ *         name: following_id
  *         schema:
  *           type: string
  *           format: uuid
- *         description: ID do post
- *       - in: query
- *         name: parent_comment_id
- *         schema:
- *           type: string
- *           format: uuid
- *         description: ID do comentário pai
+ *         description: ID do seguido
  *     responses:
  *       200:
- *         description: Lista de comentários
+ *         description: Lista de relações de Seguidor/Seguindo
  */
 
-commentsRouter.get(
+followsRouter.get(
   '/',
   celebrate({
     [Segments.QUERY]: {
       id: Joi.string().uuid(),
-      user_id: Joi.string().uuid(),
-      post_id: Joi.string().uuid(),
-      parent_comment_id: Joi.string().uuid(),
+      follower_id: Joi.string().uuid(),
+      following_id: Joi.string().uuid(),
     },
   }),
-  CommentsController.show,
+  FollowsController.show,
 );
 
 /**
  * @swagger
- * /comments/:
+ * /follows/:
  *   delete:
- *     summary: Remove um comentário
- *     tags: [Comments]
+ *     summary: Remove uma relação de Seguidor/Seguindo
+ *     tags: [Follows]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -153,20 +145,20 @@ commentsRouter.get(
  *           type: string
  *           format: uuid
  *         required: true
- *         description: ID do comentário a ser removido
+ *         description: ID da relação de Seguidor/Seguindo a ser removida
  *     responses:
  *       204:
- *         description: Comentário removido com sucesso
+ *         description: Relação de Seguidor/Seguindo removida com sucesso
  */
 
-commentsRouter.delete(
+followsRouter.delete(
   '/',
   celebrate({
     [Segments.QUERY]: {
       id: Joi.string().uuid().required(),
     },
   }),
-  CommentsController.delete,
+  FollowsController.delete,
 );
 
-export default commentsRouter;
+export default followsRouter;
