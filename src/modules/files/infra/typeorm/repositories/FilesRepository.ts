@@ -39,19 +39,27 @@ class FilesRepository implements IFilesRepository {
       AppDataSource.getRepository(Files).createQueryBuilder('files');
 
     if (search.id) {
-      query.andWhere(`files.id = '${search.id}'`);
+      query.andWhere('files.id = :id', {
+        id: search.id,
+      });
     }
 
     if (search.path) {
-      query.andWhere(`files.path = '${search.path}'`);
+      query.andWhere('files.path = :path', {
+        path: search.path,
+      });
     }
 
     if (search.user_id) {
-      query.andWhere(`files.user_id = '${search.user_id}'`);
+      query.andWhere('files.user_id = :user_id', {
+        user_id: search.user_id,
+      });
     }
 
     if (search.post_id) {
-      query.andWhere(`files.post_id = '${search.post_id}'`);
+      query.andWhere('files.post_id = :post_id', {
+        post_id: search.post_id,
+      });
     }
 
     query.andWhere(`files.active = 'true'`);

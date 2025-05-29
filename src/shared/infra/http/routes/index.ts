@@ -6,6 +6,7 @@ import filesRouter from '@modules/files/infra/http/routes/files.routes';
 import postsRouter from '@modules/posts/infra/http/routes/posts.routes';
 import commentsRouter from '@modules/comments/infra/http/routes/comments.routes';
 import likesRouter from '@modules/likes/infra/http/routes/likes.routes';
+import followsRouter from '@modules/follows/infra/http/routes/follows.routes';
 import IndexController from '../controllers/IndexController';
 
 const indexController = new IndexController();
@@ -31,5 +32,6 @@ routes.use('/files', filesRouter);
 routes.use('/posts', postsRouter);
 routes.use('/comments', commentsRouter);
 routes.use('/likes', likesRouter);
+routes.use('/follows', followsRouter);
 
 export default routes;

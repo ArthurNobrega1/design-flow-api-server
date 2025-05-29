@@ -58,6 +58,13 @@ class UpdateFileService {
       }
     }
 
+    if (data.active === false) {
+      Object.assign(data, {
+        post_id: null,
+        user_id: null,
+      });
+    }
+
     const updated = Object.assign(item, data);
 
     return this.filesRepository.save(updated);

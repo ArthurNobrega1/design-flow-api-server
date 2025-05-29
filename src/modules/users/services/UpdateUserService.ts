@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IFilesRepository from '@modules/files/repositories/IFilesRepository';
+import IFollowsRepository from '@modules/follows/repositories/IFollowsRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import ILikesRepository from '@modules/likes/repositories/ILikesRepository';
 import ICommentsRepository from '@modules/comments/repositories/ICommentsRepository';
@@ -22,6 +23,9 @@ class UpdateUserService {
 
     @inject('FilesRepository')
     private filesRepository: IFilesRepository,
+
+    @inject('FollowsRepository')
+    private followsRepository: IFollowsRepository,
 
     @inject('LikesRepository')
     private likesRepository: ILikesRepository,
@@ -49,7 +53,7 @@ class UpdateUserService {
 
     if (data.email) {
       const email = await this.usersRepository.find({ email: data.email });
-      if (email && email.length) {
+      if (email?.length && email[0].active) {
         throw new AppError('Email já registrado', 400);
       }
     }
@@ -58,7 +62,7 @@ class UpdateUserService {
       const username = await this.usersRepository.find({
         username: data.username,
       });
-      if (username && username.length) {
+      if (username?.length && username[0].active) {
         throw new AppError('Nome de usuário já registrado', 400);
       }
     }
@@ -80,6 +84,34 @@ class UpdateUserService {
       if (avatars?.length) {
         const avatar = avatars[0];
         await this.filesRepository.save({ ...avatar, active: false });
+      }
+
+      const followers = await this.followsRepository.find({
+        follower_id: data.id,
+      });
+      if (followers?.length) {
+        await Promise.all(
+          followers.map(async follower => {
+            await this.followsRepository.save({
+              ...follower,
+              active: false,
+            });
+          }),
+        );
+      }
+
+      const followings = await this.followsRepository.find({
+        following_id: data.id,
+      });
+      if (followings?.length) {
+        await Promise.all(
+          followings.map(async following => {
+            await this.followsRepository.save({
+              ...following,
+              active: false,
+            });
+          }),
+        );
       }
 
       const posts = await this.postsRepository.find({

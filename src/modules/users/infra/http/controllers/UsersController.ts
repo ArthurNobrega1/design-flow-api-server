@@ -5,6 +5,7 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import ShowUsersService from '@modules/users/services/ShowUsersService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
+import ShowAuthenticatedUserService from '@modules/users/services/ShowAuthenticatedUserService';
 
 class UsersController {
   public async create(request: Request, response: Response): Promise<void> {
@@ -36,6 +37,18 @@ class UsersController {
     const showUsersService = container.resolve(ShowUsersService);
 
     const users = await showUsersService.execute(request.query);
+
+    response.status(200).json(users);
+  }
+
+  public async me(request: Request, response: Response): Promise<void> {
+    const showAuthenticatedUserService = container.resolve(
+      ShowAuthenticatedUserService,
+    );
+
+    const userId = request.user.id;
+
+    const users = await showAuthenticatedUserService.execute(userId);
 
     response.status(200).json(users);
   }

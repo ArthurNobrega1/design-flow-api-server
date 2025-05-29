@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IFilesRepository from '@modules/files/repositories/IFilesRepository';
+import IFollowsRepository from '@modules/follows/repositories/IFollowsRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import ILikesRepository from '@modules/likes/repositories/ILikesRepository';
 import ICommentsRepository from '@modules/comments/repositories/ICommentsRepository';
@@ -20,6 +21,9 @@ class DeleteUserService {
 
     @inject('FilesRepository')
     private filesRepository: IFilesRepository,
+
+    @inject('FollowsRepository')
+    private followsRepository: IFollowsRepository,
 
     @inject('LikesRepository')
     private likesRepository: ILikesRepository,
@@ -44,7 +48,7 @@ class DeleteUserService {
 
     const itens = await this.usersRepository.find({ id });
 
-    if (!itens || !itens.length) {
+    if (!itens?.length) {
       throw new AppError('Usuário não encontrado', 404);
     }
 
@@ -62,6 +66,28 @@ class DeleteUserService {
     if (item.avatar) {
       await this.storageProvider.deleteFile(item.avatar.path);
       await this.filesRepository.delete(item.avatar.id);
+    }
+
+    const followers = await this.followsRepository.find({
+      follower_id: id,
+    });
+    if (followers?.length) {
+      await Promise.all(
+        followers.map(async follower => {
+          await this.followsRepository.delete(follower.id);
+        }),
+      );
+    }
+
+    const followings = await this.followsRepository.find({
+      following_id: id,
+    });
+    if (followings?.length) {
+      await Promise.all(
+        followings.map(async following => {
+          await this.followsRepository.delete(following.id);
+        }),
+      );
     }
 
     const posts = await this.postsRepository.find({

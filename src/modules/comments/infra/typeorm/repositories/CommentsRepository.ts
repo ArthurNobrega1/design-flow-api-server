@@ -40,14 +40,36 @@ class CommentsRepository implements ICommentsRepository {
     const query = AppDataSource.getRepository(Comments)
       .createQueryBuilder('comments')
       .leftJoinAndSelect('comments.user', 'user')
-      .leftJoinAndSelect('comments.likes', 'likes', 'likes.active = true');
+      .leftJoinAndSelect('user.avatar', 'avatar', 'avatar.active = true')
+      .leftJoinAndSelect('comments.likes', 'likes', 'likes.active = true')
+      .leftJoinAndSelect('comments.replies', 'replies', 'replies.active = true')
+      .leftJoinAndSelect(
+        'replies.likes',
+        'repliesLikes',
+        'repliesLikes.active = true',
+      )
+      .leftJoinAndSelect(
+        'replies.user',
+        'repliesUser',
+        'repliesUser.active = true',
+      );
 
     if (search.id) {
-      query.andWhere(`comments.id = '${search.id}'`);
+      query.andWhere('comments.id = :id', {
+        id: search.id,
+      });
     }
 
     if (search.user_id) {
-      query.andWhere(`comments.user_id = '${search.user_id}'`);
+      query.andWhere('comments.user_id = :user_id', {
+        user_id: search.user_id,
+      });
+    }
+
+    if (search.parent_comment_id) {
+      query.andWhere('comments.parent_comment_id = :parent_comment_id', {
+        parent_comment_id: search.parent_comment_id,
+      });
     }
 
     query.andWhere(`comments.active = 'true'`);

@@ -28,7 +28,7 @@ class SendForgotPasswordEmailService {
 
     const users = await this.usersRepository.find({ email: data.email });
 
-    if (!users || !users.length) {
+    if (!users?.length || !users[0].active) {
       throw new AppError('Usuário não encontrado', 404);
     }
 

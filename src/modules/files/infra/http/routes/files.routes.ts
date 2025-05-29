@@ -27,22 +27,23 @@ filesRouter.use(AuthMiddleware);
  *           schema:
  *             type: object
  *             properties:
+ *               user_id:
+ *                 type: string
+ *                 format: uuid
  *               post_id:
  *                 type: string
  *                 format: uuid
- *               active:
- *                 type: boolean
  *     responses:
  *       201:
  *         description: Arquivo criado com sucesso
  */
 filesRouter.post(
   '/',
-  upload.array('files'),
+  upload.array('files', 4),
   celebrate({
     [Segments.BODY]: {
+      user_id: Joi.string().uuid(),
       post_id: Joi.string().uuid(),
-      active: Joi.boolean(),
     },
   }),
   FilesController.create,

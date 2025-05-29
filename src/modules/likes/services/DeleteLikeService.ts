@@ -28,7 +28,7 @@ class DeleteLikeService {
 
     if (item.user_id !== userId) {
       throw new AppError(
-        'Você não tem permissão para deletar es comentário',
+        'Você não tem permissão para deletar essa curtida',
         400,
       );
     }

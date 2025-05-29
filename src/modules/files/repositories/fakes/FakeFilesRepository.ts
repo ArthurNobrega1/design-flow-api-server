@@ -1,6 +1,6 @@
 import timezone from '@shared/utils/timezone';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import Files from '@modules/files/infra/typeorm/entities/files';
 import ISearchFilesDTO from '@modules/files/dtos/ISearchFilesDTO';
 import ICreateFilesDTO from '@modules/files/dtos/ICreateFilesDTO';

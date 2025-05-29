@@ -4,7 +4,7 @@ import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import Users from '@modules/users/infra/typeorm/entities/users';
 import ISearchUsersDTO from '@modules/users/dtos/ISearchUsersDTO';
 import { parse } from 'date-fns';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 class FakeUsersRepository implements IUsersRepository {
   private users: Users[] = [];
