@@ -33,7 +33,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -59,7 +58,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -91,7 +89,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -117,7 +114,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -149,7 +145,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     await expect(
       createLikeService.execute({ post_id: 'non-existent' }, user.id),
@@ -164,7 +159,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     await expect(
       createLikeService.execute(
@@ -184,7 +178,6 @@ describe('CreateLike', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     await expect(createLikeService.execute({}, user.id)).rejects.toBeInstanceOf(
       AppError,

@@ -35,7 +35,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const files = await createFileService.execute(
@@ -63,7 +62,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -96,7 +94,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -116,7 +113,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -136,7 +132,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     await expect(
       createFileService.execute(
@@ -162,7 +157,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     const user2 = await fakeUsersRepository.create({
       email: 'jhonDoe2@gmail.com',
@@ -171,7 +165,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe002',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     await expect(
       createFileService.execute(
@@ -197,7 +190,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -224,7 +216,6 @@ describe('CreateFilesService', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(

@@ -31,7 +31,6 @@ describe('ResetPasswordEmail', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const { token } = await fakeUserTokensRepository.generate(user.id);
@@ -77,7 +76,6 @@ describe('ResetPasswordEmail', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const { token } = await fakeUserTokensRepository.generate(user.id);
@@ -104,7 +102,6 @@ describe('ResetPasswordEmail', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const { token } = await fakeUserTokensRepository.generate(user.id);

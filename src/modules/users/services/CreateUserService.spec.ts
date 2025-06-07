@@ -24,7 +24,6 @@ describe('CreateUser', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     expect(user).toHaveProperty('id');
@@ -38,7 +37,6 @@ describe('CreateUser', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -49,7 +47,6 @@ describe('CreateUser', () => {
         username: 'jhonTre100',
         bio: 'just nothing too...',
         birthday: new Date('2025-04-04'),
-        permission: 'anyone',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -62,7 +59,6 @@ describe('CreateUser', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -73,7 +69,6 @@ describe('CreateUser', () => {
         username: 'jhonDoe001',
         bio: 'just nothing too...',
         birthday: new Date('2025-04-04'),
-        permission: 'anyone',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -87,7 +82,6 @@ describe('CreateUser', () => {
         username: 'jhonDoe001',
         bio: 'just nothing...',
         birthday: new Date('2025-04-04'),
-        permission: 'anyone',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -101,7 +95,6 @@ describe('CreateUser', () => {
         username: 'jhonDoe001',
         bio: 'just nothing...',
         birthday: new Date('2025-04-04'),
-        permission: 'anyone',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

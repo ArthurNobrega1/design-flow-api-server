@@ -28,7 +28,6 @@ describe('CreateComment', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -55,7 +54,6 @@ describe('CreateComment', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await fakePostsRepository.create({
@@ -82,7 +80,6 @@ describe('CreateComment', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(

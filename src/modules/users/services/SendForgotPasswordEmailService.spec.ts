@@ -30,7 +30,6 @@ describe('SendForgotPasswordEmail', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await sendForgotPasswordEmailService.execute({
@@ -56,7 +55,6 @@ describe('SendForgotPasswordEmail', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await sendForgotPasswordEmailService.execute({

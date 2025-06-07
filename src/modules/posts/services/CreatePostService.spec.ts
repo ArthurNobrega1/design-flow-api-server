@@ -24,7 +24,6 @@ describe('CreatePost', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const post = await createPostService.execute(

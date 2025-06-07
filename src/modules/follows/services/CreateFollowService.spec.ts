@@ -24,7 +24,6 @@ describe('CreateFollow', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     const following = await fakeUsersRepository.create({
       email: 'jhonTre@gmail.com',
@@ -33,7 +32,6 @@ describe('CreateFollow', () => {
       username: 'jhonTre100',
       bio: 'just nothing too...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
     const follow = await createFollowService.execute(
       {
@@ -53,7 +51,6 @@ describe('CreateFollow', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -74,7 +71,6 @@ describe('CreateFollow', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
@@ -95,7 +91,6 @@ describe('CreateFollow', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(

@@ -32,7 +32,6 @@ describe('AuthenticateUser', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const response = await authenticateUserService.execute({
@@ -52,7 +51,6 @@ describe('AuthenticateUser', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     const response = await authenticateUserService.execute({
@@ -81,7 +79,6 @@ describe('AuthenticateUser', () => {
       username: 'jhonDoe001',
       bio: 'just nothing...',
       birthday: new Date('2025-04-04'),
-      permission: 'anyone',
     });
 
     await expect(
