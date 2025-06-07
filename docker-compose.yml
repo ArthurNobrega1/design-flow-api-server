@@ -34,7 +34,6 @@ services:
     working_dir: /api
     volumes:
       - .:/api
-      - /api/node_modules
 
     ports:
       - '${PORT}:${INTERNAL_PORT}'
