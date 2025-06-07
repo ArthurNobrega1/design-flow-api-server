@@ -39,11 +39,13 @@ class DeleteUserService {
   ) {}
 
   public async execute(id: string, userId: string): Promise<void> {
-    if (id !== userId) {
-      throw new AppError(
-        'Você não tem permissão para editar este usuário',
-        401,
-      );
+    const user = await this.usersRepository.findById(userId);
+    if (!user || !user.active) {
+      throw new AppError('Usuário inválido', 400);
+    }
+
+    if (user.permission !== 'admin') {
+      throw new AppError('Você não tem permissão para deletar usuários', 400);
     }
 
     const itens = await this.usersRepository.find({ id });

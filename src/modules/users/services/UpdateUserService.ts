@@ -38,17 +38,24 @@ class UpdateUserService {
   ) {}
 
   public async execute(data: IUpdateUserDTO, userId: string): Promise<Users> {
-    if (data.id !== userId) {
+    const item = await this.usersRepository.findById(data.id);
+
+    if (!item) {
+      throw new AppError('Usuário não encontrado', 404);
+    }
+
+    if (data.id !== userId && item.permission !== 'admin') {
       throw new AppError(
         'Você não tem permissão para editar este usuário',
         401,
       );
     }
 
-    const item = await this.usersRepository.findById(data.id);
-
-    if (!item) {
-      throw new AppError('Usuário não encontrado', 404);
+    if (data.permission && item.permission !== 'admin') {
+      throw new AppError(
+        'Você não tem permissão para alterar uma permissão',
+        400,
+      );
     }
 
     if (data.email) {

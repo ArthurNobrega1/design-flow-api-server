@@ -36,17 +36,14 @@ class DeletePostService {
       throw new AppError('Usuário inválido', 400);
     }
 
+    if (user.permission !== 'admin') {
+      throw new AppError('Você não tem permissão para deletar postagens', 400);
+    }
+
     const item = await this.postsRepository.findById(id);
 
     if (!item) {
       throw new AppError('Postagem não encontrada', 404);
-    }
-
-    if (item.user_id !== userId) {
-      throw new AppError(
-        'Você não tem permissão para deletar esta postagem',
-        400,
-      );
     }
 
     const likes = await this.likesRepository.find({

@@ -20,17 +20,14 @@ class DeleteLikeService {
       throw new AppError('Usuário inválido', 400);
     }
 
+    if (user.permission !== 'admin') {
+      throw new AppError('Você não tem permissão para deletar curtidas', 400);
+    }
+
     const item = await this.likesRepository.findById(id);
 
     if (!item) {
       throw new AppError('Curtida não encontrada', 404);
-    }
-
-    if (item.user_id !== userId) {
-      throw new AppError(
-        'Você não tem permissão para deletar essa curtida',
-        400,
-      );
     }
 
     return this.likesRepository.delete(id);
