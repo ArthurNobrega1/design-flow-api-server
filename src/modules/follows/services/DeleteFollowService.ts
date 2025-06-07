@@ -20,6 +20,13 @@ class DeleteFollowService {
       throw new AppError('Usuário inválido', 400);
     }
 
+    if (user.permission !== 'admin') {
+      throw new AppError(
+        'Você não tem permissão para deletar seguidores/seguindos',
+        400,
+      );
+    }
+
     const item = await this.followsRepository.findById(id);
 
     if (!item) {
