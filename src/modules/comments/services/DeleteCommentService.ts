@@ -24,6 +24,13 @@ class DeleteCommentService {
       throw new AppError('Usuário inválido', 400);
     }
 
+    if (user.permission !== 'admin') {
+      throw new AppError(
+        'Você não tem permissão para deletar comentários',
+        400,
+      );
+    }
+
     const item = await this.commentsRepository.findById(id);
 
     if (!item) {

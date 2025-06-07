@@ -37,7 +37,7 @@ services:
       - /api/node_modules
 
     ports:
-      - '3337:3333'
+      - '${PORT}:${INTERNAL_PORT}'
     depends_on:
       - db
     networks:

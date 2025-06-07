@@ -28,20 +28,16 @@ class DeleteFileService {
       throw new AppError('Usuário inválido', 400);
     }
 
+    if (user.permission !== 'admin') {
+      throw new AppError('Você não tem permissão para deletar arquivos', 400);
+    }
+
     const item = await this.filesRepository.findById(id);
 
     if (!item) {
       throw new AppError('Arquivo não encontrado', 404);
     }
 
-    if (item.user_id) {
-      if (item.user_id !== userId) {
-        throw new AppError(
-          'Você não tem permissão para deletar este arquivo',
-          400,
-        );
-      }
-    }
     if (item.post_id) {
       const post = await this.postsRepository.findById(item.post_id);
       if (!post || !post.active) {

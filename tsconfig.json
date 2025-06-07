@@ -18,5 +18,12 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "dist", "eslint.config.mjs", "prettier.config.js", "jest.config.js", "coverage"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "eslint.config.mjs",
+    "prettier.config.js",
+    "jest.config.js",
+    "coverage"
+  ]
 }

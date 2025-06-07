@@ -17,7 +17,8 @@ import setupSwagger from './swagger';
 
 const logger = container.resolve<ILoggerProvider>('LoggerProvider');
 
-const port = 3333;
+const internalPort = Number(process.env.INTERNAL_PORT) || 3333;
+const externalPort = process.env.PORT || internalPort;
 
 const app = express();
 
@@ -75,6 +76,6 @@ app.use(
   },
 );
 
-app.listen(port, () => {
-  logger.info(`Acesse em http://localhost:3337`);
+app.listen(internalPort, () => {
+  logger.info(`Acesse em http://localhost:${externalPort}`);
 });
